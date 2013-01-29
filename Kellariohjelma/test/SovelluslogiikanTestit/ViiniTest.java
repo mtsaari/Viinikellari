@@ -1,3 +1,5 @@
+package SovelluslogiikanTestit;
+
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
@@ -5,6 +7,8 @@
 
 import Sovelluslogiikka.Arvio;
 import Sovelluslogiikka.Paivays;
+import Sovelluslogiikka.Tyyli;
+import Sovelluslogiikka.Vari;
 import Sovelluslogiikka.Viini;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -26,12 +30,12 @@ public class ViiniTest {
     
     @Before
     public void setUp() {
-        viini1 = new Viini("punainen","mieto viini","Syrah","2010","Ranska",
+        viini1 = new Viini(Vari.PUNAINEN, Tyyli.MIETO,"Syrah","2010","Ranska",
                 "Pohjois-Rhone","St Joseph","Delas","Francois de Tournon");
     }
     @Test
     public void equalsMetodiToimii() {
-        Viini viini2 =  new Viini("punainen","mieto viini","Syrah","2010","Ranska",
+        Viini viini2 =  new Viini(Vari.PUNAINEN, Tyyli.MIETO,"Syrah","2010","Ranska",
                 "Pohjois-Rhone","St Joseph","Delas","Francois de Tournon");
         assertEquals(true, viini1.equals(viini2));
     }

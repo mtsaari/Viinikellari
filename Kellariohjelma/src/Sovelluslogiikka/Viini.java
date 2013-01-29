@@ -10,8 +10,8 @@ import java.util.ArrayList;
  */
 public class Viini {
 
-    private String vari;
-    private String tyyli;
+    private Vari vari;
+    private Tyyli tyyli;
     private String vuosikerta;
     private String maa;
     private String alue;
@@ -23,7 +23,7 @@ public class Viini {
     private String hakumerkkijono;
     private ArrayList<Arvio> arviot;
 
-    public Viini(String vari, String tyyli, String rypalelaji, String vuosikerta,
+    public Viini(Vari vari, Tyyli tyyli, String rypalelaji, String vuosikerta,
             String maa, String alue, String alkupera, String tuottaja, String pullote) {
         this.vari = vari;
         this.tyyli = tyyli;
@@ -37,13 +37,13 @@ public class Viini {
         this.hakusanat = new ArrayList<String>();
         this.arviot  = new ArrayList<Arvio>();
         lisaaHakusanat();
-        this.hakumerkkijono = vari+" "+tyyli+" "+maa+" "+vuosikerta+" "
-                +alue+" "+tuottaja+" "+pullote+" "+alkupera+" "+rypalelaji;
+        this.hakumerkkijono = vari+"¤"+tyyli+"¤"+rypalelaji+"¤"+vuosikerta
+                +"¤"+maa+"¤"+alue+"¤"+alkupera+"¤"+tuottaja+"¤"+pullote;
     }
 
     private void lisaaHakusanat() {
-        hakusanat.add(vari);
-        hakusanat.add(tyyli);
+        hakusanat.add(vari.toString());
+        hakusanat.add(tyyli.toString());
         hakusanat.add(vuosikerta);
         hakusanat.add(maa);
         hakusanat.add(alue);
@@ -95,14 +95,14 @@ public class Viini {
     @Override
     public String toString() {
         return "Vuosikerta:         " + vuosikerta + "\n"
-                + "Vari:               " + vari + "\n" 
-                + "Tyyli:              " + tyyli + "\n"
+                + "Vari:               " + vari.toString() + "\n" 
+                + "Tyyli:              " + tyyli.toString() + "\n"
                 + "Tuottaja:           " + tuottaja + "\n"
                 + "Rypälelaji          " + rypalelaji + "\n"
                 + "Pullote             " + pullote + "\n"
                 + "Maa                 " + maa + "\n"
                 + "Alue                " + alue + "\n"
-                + "Alkuperämerkintä    " + alkupera + "\n" + "\n" + "\n"
+                + "Alkuperämerkintä    " + alkupera + "\n" + "\n"
                 + naytaArviot();
     }
 

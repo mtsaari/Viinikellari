@@ -4,7 +4,8 @@
  */
 package kellariohjelma;
 
-import Kayttoliittyma.Kayttoliittyma;
+import Kayttoliittyma.Aloitus;
+import java.io.IOException;
 
 /**
  *
@@ -15,8 +16,8 @@ public class Kellariohjelma {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
-       Kayttoliittyma liittyma = new Kayttoliittyma();
+    public static void main(String[] args) throws IOException {
+       Aloitus liittyma = new Aloitus();
        liittyma.alkuvalikko();
     }
 }
