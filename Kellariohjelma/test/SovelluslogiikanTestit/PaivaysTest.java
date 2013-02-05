@@ -54,4 +54,10 @@ public class PaivaysTest {
         assertEquals(true, new Paivays(29,2,2012).onkoPaivaysKorrekti());
         assertEquals(false, new Paivays(29,2,1900).onkoPaivaysKorrekti());
     }
+    @Test
+    public void konstruktoriLuoKopionOliostaKunParametrinaOnToString() {
+        Paivays uusi = new Paivays(eka.toString());
+        assertEquals(0, uusi.compareTo(eka));
+    }
+    
 }

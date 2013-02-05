@@ -5,17 +5,10 @@ package SovelluslogiikanTestit;
  * and open the template in the editor.
  */
 
-import Sovelluslogiikka.Arvio;
-import Sovelluslogiikka.Paivays;
-import Sovelluslogiikka.Tyyli;
-import Sovelluslogiikka.Vari;
 import Sovelluslogiikka.Viini;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
 import static org.junit.Assert.*;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  *
@@ -30,24 +23,23 @@ public class ViiniTest {
     
     @Before
     public void setUp() {
-        viini1 = new Viini(Vari.PUNAINEN, Tyyli.MIETO,"Syrah","2010","Ranska",
+        viini1 = new Viini("puna", "mieto","Syrah","2010","Ranska",
                 "Pohjois-Rhone","St Joseph","Delas","Francois de Tournon");
     }
     @Test
     public void equalsMetodiToimii() {
-        Viini viini2 =  new Viini(Vari.PUNAINEN, Tyyli.MIETO,"Syrah","2010","Ranska",
+        Viini viini2 =  new Viini("puna","mieto","Syrah","2010","Ranska",
                 "Pohjois-Rhone","St Joseph","Delas","Francois de Tournon");
         assertEquals(true, viini1.equals(viini2));
+        Viini viini3 = new Viini("puna","mieto","Syrah","2009","Ranska",
+                "Pohjois-Rhone","St Joseph","Delas","Francois de Tournon");
+        assertEquals(false, viini3.equals(viini1));
     }
-    @Test
-    public void keskiarvoMetodiToimiiEikaPisteettomatArviotLaskeKeskiarvoa() {
-        Arvio a1 = new Arvio("Mikko", new Paivays(21,1,2013), 90, "Tämä oli hyvää");
-        Arvio a2 = new Arvio("Mikko", new Paivays(21,1,2013), 89, "Tämä oli hyvää");
-        Arvio a3 = new Arvio("Mikko", new Paivays(21,1,2013), "Tämä oli hyvää");
-        viini1.lisaaArvio(a2);
-        viini1.lisaaArvio(a1);
-        viini1.lisaaArvio(a3);
-        assertEquals(89.5, viini1.pisteKeskiArvo(), 1e-15);
+    @Test 
+    public void konstruktoriLuoKopionViinistaTiedostomuodonAvulla() {
+        Viini uusi = new Viini(viini1.tiedostomuoto());
+        assertEquals(true, uusi.equals(viini1));
     }
+    
     
 }

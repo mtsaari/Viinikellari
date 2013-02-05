@@ -1,7 +1,8 @@
 
 package Sovelluslogiikka;
 
-import java.util.ArrayList;
+
+import java.util.Random;
 
 
 /**
@@ -9,7 +10,6 @@ import java.util.ArrayList;
  * @author mikko
  */
 public class Viini {
-
     private Vari vari;
     private Tyyli tyyli;
     private String vuosikerta;
@@ -19,14 +19,14 @@ public class Viini {
     private String tuottaja;
     private String pullote;
     private String rypalelaji;
-    private ArrayList<String> hakusanat;
-    private String hakumerkkijono;
-    private ArrayList<Arvio> arviot;
+    private String avain;
+    
 
-    public Viini(Vari vari, Tyyli tyyli, String rypalelaji, String vuosikerta,
+    public Viini(String vari, String tyyli, String rypalelaji, String vuosikerta,
             String maa, String alue, String alkupera, String tuottaja, String pullote) {
-        this.vari = vari;
-        this.tyyli = tyyli;
+        luoAvain();
+        vari(vari);
+        tyyli(tyyli);
         this.maa = maa;
         this.vuosikerta = vuosikerta;
         this.alue = alue;
@@ -34,64 +34,65 @@ public class Viini {
         this.pullote = pullote;
         this.alkupera = alkupera;
         this.rypalelaji = rypalelaji;
-        this.hakusanat = new ArrayList<String>();
-        this.arviot  = new ArrayList<Arvio>();
-        lisaaHakusanat();
-        this.hakumerkkijono = vari+"¤"+tyyli+"¤"+rypalelaji+"¤"+vuosikerta
+     
+        
+    }
+    public Viini(String b) {
+        String[] a = b.split("¤");
+        this.avain = a[0];
+        this.vari = Vari.valueOf(a[1]); this.tyyli = Tyyli.valueOf(a[2]);
+        this.rypalelaji = a[3];
+        this.vuosikerta = a[4];
+        this.maa = a[5];
+        this.alue = a[6];
+        this.alkupera = a[7];
+        this.tuottaja = a[8];
+        this.pullote = a[9];   
+        
+    }
+    private boolean tyyli(String t) {                
+        if (t.equals("mieto")) {
+            this.tyyli = Tyyli.MIETO;
+        }   else if (t.equals("kuohuva")) {
+            this.tyyli = Tyyli.KUOHUVA;
+        }   else if (t.equals("vakeva")) {
+            this.tyyli = Tyyli.VAKEVA;
+        }   else if (t.equals("makea")) {
+            this.tyyli = Tyyli.MAKEA;
+        }   else {
+            return false;            
+        }
+        return true;
+    }
+    private boolean vari(String vari) {    
+        if (vari.equals("puna")) {
+            this.vari = Vari.PUNAINEN;
+        }   else if (vari.equals("valko")) {
+            this.vari = Vari.VALKOINEN;
+        }   else if (vari.equals("rose")) {
+            this.vari = Vari.ROSE;
+        }   else    {
+            return false;
+            
+        }
+        return true; 
+    }
+    public String tiedostomuoto() { 
+        return avain+"¤"+vari+"¤"+tyyli+"¤"+rypalelaji+"¤"+vuosikerta
                 +"¤"+maa+"¤"+alue+"¤"+alkupera+"¤"+tuottaja+"¤"+pullote;
     }
-
-    private void lisaaHakusanat() {
-        hakusanat.add(vari.toString());
-        hakusanat.add(tyyli.toString());
-        hakusanat.add(vuosikerta);
-        hakusanat.add(maa);
-        hakusanat.add(alue);
-        hakusanat.add(tuottaja);
-        if (!alkupera.isEmpty()) {
-            hakusanat.add(alkupera);
+    private void luoAvain() {
+        String a = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM";
+        Random r = new Random();
+        String s = "";
+        for (int i = 0; i < 10; i++) {
+            s += a.charAt(r.nextInt(a.length()));
         }
-        if (!pullote.isEmpty()) {
-            hakusanat.add(pullote);
-        }
-        if (!rypalelaji.isEmpty()) {
-        hakusanat.add(rypalelaji);
-        }
+        this.avain = s;
     }
-    public ArrayList<String> getHakusanat() {
-        return hakusanat;
+    public String getAvain() {
+        return avain;
     }
-    public String getHakumerkkijono() {
-        return hakumerkkijono;
-    }
-    public void lisaaArvio(Arvio a) {
-        arviot.add(a);
-    }
-
-    public String naytaArviot() {
-        String p = "";
-        for (Arvio arvio : arviot) {
-            p += arvio.toString() + "\n";
-        }
-        return p;
-    }
-
-    public double pisteKeskiArvo() {
-        if (!arviot.isEmpty()) {
-            int summa = 0;
-            int eiPisteita = 0;
-            for (Arvio arvio : arviot) {
-                if (arvio.getPisteet() != 0) {
-                    summa += arvio.getPisteet();
-                }   else    {
-                    eiPisteita++;
-                }
-            }
-            return (double) summa / (arviot.size()-eiPisteita);
-        }
-        return 0;
-    }
-   
     @Override
     public String toString() {
         return "Vuosikerta:         " + vuosikerta + "\n"
@@ -102,12 +103,12 @@ public class Viini {
                 + "Pullote             " + pullote + "\n"
                 + "Maa                 " + maa + "\n"
                 + "Alue                " + alue + "\n"
-                + "Alkuperämerkintä    " + alkupera + "\n" + "\n"
-                + naytaArviot();
+                + "Alkuperämerkintä    " + alkupera + "\n" + "\n";
+                
     }
 
     public String lyhytToString() {
-        return vuosikerta + " " + tuottaja + " " + alkupera + " " + pullote + " " + ". Pisteet (ka): " + pisteKeskiArvo();
+        return vuosikerta + " " + tuottaja + " " + alkupera + " " + pullote;
     }
     
     @Override
