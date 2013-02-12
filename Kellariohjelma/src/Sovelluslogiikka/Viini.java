@@ -9,7 +9,7 @@ import java.util.Random;
  *
  * @author mikko
  */
-public class Viini {
+public class Viini implements Comparable<Viini>{
     private Vari vari;
     private Tyyli tyyli;
     private String vuosikerta;
@@ -159,6 +159,24 @@ public class Viini {
         hash = 11 * hash + (this.tuottaja != null ? this.tuottaja.hashCode() : 0);
         hash = 11 * hash + (this.pullote != null ? this.pullote.hashCode() : 0);
         return hash;
+    }
+
+    @Override
+    public int compareTo(Viini t) {
+        if(!this.vuosikerta.equals("nv")) {
+            int tamaVk = Integer.parseInt(this.vuosikerta);
+            int tuoVk = Integer.parseInt(t.vuosikerta);
+            if (tamaVk > tuoVk) {
+                return -1;
+            }
+            if (tamaVk < tuoVk) {
+                return 1;
+            }
+        }
+        if(this.tuottaja.compareTo(t.tuottaja)!=0) {
+            return this.tuottaja.compareTo(t.tuottaja);
+        }
+        return this.pullote.compareTo(t.pullote);
     }
     
 }

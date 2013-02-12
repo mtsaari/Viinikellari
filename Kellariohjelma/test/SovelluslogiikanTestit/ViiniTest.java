@@ -6,6 +6,8 @@ package SovelluslogiikanTestit;
  */
 
 import Sovelluslogiikka.Viini;
+import java.util.ArrayList;
+import java.util.Collections;
 import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,6 +18,9 @@ import org.junit.Test;
  */
 public class ViiniTest {
     private Viini viini1;
+    private Viini v2;
+    private Viini v3;
+    
     public ViiniTest() {
     }
     
@@ -25,6 +30,21 @@ public class ViiniTest {
     public void setUp() {
         viini1 = new Viini("puna", "mieto","Syrah","2010","Ranska",
                 "Pohjois-Rhone","St Joseph","Delas","Francois de Tournon");
+        this.v2 = new Viini("puna", "mieto", "Pinot Noir", "2010", "Ranska",
+                 "Burgundi", "Mercurey", "Faiveley", "Clos des Myglands");
+        this.v3 = new Viini("valko", "makea", "Riesling", "2011", "Saksa",
+                 "Nahe", "-","Dönnhoff", "Oberhauser Leistenberg Riesling Kabinett");
+    }
+    @Test
+    public void compareToMetodiJarjestaaViinitVuosikerranTuottajanPullotteenMukaan() {
+        ArrayList<Viini> viinit = new ArrayList<Viini>();
+        viinit.add(v2);
+        viinit.add(viini1);
+        viinit.add(v3);
+        Collections.sort(viinit);
+        assertEquals(true, viinit.get(0).equals(v3));
+        assertEquals(true, viinit.get(1).equals(viini1));
+        assertEquals(true, viinit.get(2).equals(v2));
     }
     @Test
     public void equalsMetodiToimii() {

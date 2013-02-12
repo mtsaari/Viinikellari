@@ -4,7 +4,6 @@
  */
 package Kayttoliittyma;
 
-import Sovelluslogiikka.Kayttaja;
 import Sovelluslogiikka.Kellaritoiminnot;
 import java.util.Scanner;
 
@@ -28,21 +27,30 @@ public class Kayttoliittyma {
         
     }
     public void Kaynnista() {
-        toiminnot.lisaaViinilista(tiedostonkasittely.kopioiViinit());
-        toiminnot.lisaaArviolista(tiedostonkasittely.kopioiArviot());
+        kopioiTiedostot();
         while(aloitus.getKaynnissa()) {
             if(aloitus.getKirjautunut()) {
                 kayttajanakyma.liitaKayttaja(aloitus.getKayttaja());
                 while(kayttajanakyma.getKirjautunut()) {
                     kayttajanakyma.perusnakyma();
                 }
+                aloitus.kirjauduUlos();
             }
             aloitus.alkuvalikko();
         }
         lopeta();
     }
+    private void kopioiTiedostot() {
+        toiminnot.lisaaViinilista(tiedostonkasittely.kopioiViinit());
+        toiminnot.lisaaArviolista(tiedostonkasittely.kopioiArviot());
+        toiminnot.lisaaHankintalista(tiedostonkasittely.kopioiHankinnat());
+        toiminnot.lisaaKayttajalista(tiedostonkasittely.kopioiKayttajat());
+        tiedostonkasittely.tyhjennaKaikkiTiedostot();
+    }
     private void lopeta() {
         tiedostonkasittely.kirjoitaViinit(toiminnot.getViinit());
         tiedostonkasittely.kirjoitaArviot(toiminnot.getArviot());
+        tiedostonkasittely.kirjoitaKayttajat(toiminnot.getKayttajat());
+        tiedostonkasittely.kirjoitaHankinnat(toiminnot.getHankinnat());
     }
 }

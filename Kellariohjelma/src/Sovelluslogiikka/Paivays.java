@@ -6,26 +6,33 @@ package Sovelluslogiikka;
 
 /**
  *
- * @author mikko1
+ * @author mikko
  * 
  */
 public class Paivays implements Comparable<Paivays> {
     private int paiva;
     private int kuukausi;
     private int vuosi;
-
+   
     public Paivays(int paiva, int kuukausi, int vuosi) {
         this.vuosi = vuosi;
         this.kuukausi = kuukausi;
         this.paiva = paiva;
     }
+    /**
+     * Konstruktori, joka luo uuden Paivays-olion muotoa pp.kk.vvvv olevasta merkkijonosta
+     * @param s merkkijono, jonka on oltava muotoa pp.kk.vvvv 
+     */
     public Paivays(String s) {
         String[]a = s.split("\\.");
         this.paiva = Integer.parseInt(a[0]);
         this.kuukausi = Integer.parseInt(a[1]);
         this.vuosi = Integer.parseInt(a[2]);
     }
-
+    /**
+     * Tarkistaa, että päivämäärää ja kuukautta ilmaisevien kokonaislukujen arvo ei ole liian suuri tai pieni. 
+     * @return false, jos Paivays ei ole korrekti, muuten true.
+     */
     public boolean onkoPaivaysKorrekti() {
         if (kuukausi < 1 || kuukausi > 12) {
             return false;
@@ -43,7 +50,11 @@ public class Paivays implements Comparable<Paivays> {
         }
         return true;
     }
-
+    /**
+     * Jos kuukausi on helmikuu, onkoPaivaysKorrekti-metodi kutsuu tätä metodia,joka tarkistaa onko vuosi karkausvuosi.
+     * @return false, jos vuosi on karkausvuosi ja paiva ei ole välillä 1-29;
+     * false, jos vuosi ei ole karkausvuosi ja paiva ei ole välillä 1-28; muuten true.
+     */
     private boolean karkausvuosi() {
         if (vuosi % 4 != 0 || vuosi % 100 == 0 && !(vuosi % 400 == 0)) {
             if (paiva < 1 || paiva > 28) {

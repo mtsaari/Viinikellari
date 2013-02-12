@@ -4,7 +4,6 @@
  */
 package Sovelluslogiikka;
 
-import Sovelluslogiikka.Hankinta;
 import java.util.ArrayList;
 
 
@@ -16,28 +15,30 @@ import java.util.ArrayList;
 public class Kayttaja {
     
     private String nimi;
+    private String salasana;
     private String kayttajatunnus;
     private ArrayList<Hankinta> omaKellari;
     
-    public Kayttaja(String nimi, String kayttajatunnus) {
+    public Kayttaja(String nimi, String kayttajatunnus, String salasana) {
         this.nimi = nimi;
         this.kayttajatunnus = kayttajatunnus;
-        this.omaKellari = new ArrayList<Hankinta>();
-        
-    }    
+        this.salasana = salasana;
+             
+    }
+    public Kayttaja(String s) {
+        String[] a = s.split("¤");
+        this.kayttajatunnus = a[0];
+        this.salasana = a[1];
+        this.nimi = a[2];
+    }
+    public void liitaKellari(ArrayList<Hankinta> lista) {
+        this.omaKellari = lista;
+    }
     public String getKayttajatunnus() {
         return kayttajatunnus;
     }
-    
-    public String listaaViinit() {
-        String hankinnat = "";
-        for (Hankinta h: omaKellari) {
-            hankinnat += h.toString()+"\n";
-        }
-        return hankinnat;
-    }
     public String tiedostomuoto() {
-        return "Kayttajatunnus: "+kayttajatunnus;
+        return kayttajatunnus+"¤"+salasana+"¤"+nimi;
     }
     
 }

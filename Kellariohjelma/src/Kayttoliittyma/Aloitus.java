@@ -4,8 +4,8 @@
  */
 package Kayttoliittyma;
 
-import Sovelluslogiikka.Kayttaja;
 import Sovelluslogiikka.Arvio;
+import Sovelluslogiikka.Kayttaja;
 import Sovelluslogiikka.Kellaritoiminnot;
 import Sovelluslogiikka.Viini;
 import java.util.ArrayList;
@@ -25,7 +25,7 @@ public class Aloitus {
     public Aloitus(Kellaritoiminnot toiminnot, Scanner lukija) {
         this.lukija = lukija;
         this.kaynnissa = true;
-        this.toiminnot = new Kellaritoiminnot();
+        this.toiminnot = toiminnot;
         this.kirjautunut = false;
         this.kayttaja = null;
     }
@@ -53,22 +53,12 @@ public class Aloitus {
         return kirjautunut;
     }
     public void etsiViiniarvioita() {
-        System.out.println("Anna hakusana(t):");
-        String hakusanat = lukija.nextLine();
-        ArrayList<Viini> loydetyt = toiminnot.etsiViineja(hakusanat);
-        if (loydetyt.isEmpty()) {
+        System.out.print("Anna hakusana(t): ");
+        Viini etsitty = etsiViini();
+        if (etsitty==null) {
             System.out.println("Viiniä ei löytynyt");
         } else {
-            int nro = 1;
-            System.out.println("Löytyi seuraavat viinit");
-            for (Viini viini : loydetyt) {
-                System.out.println(nro + " - " + viini.lyhytToString());
-                nro++;
-            }
-            System.out.print("Anna etsimäsi viinin numero: ");
-            int indeksi = Integer.parseInt(lukija.nextLine()) - 1;
-            Viini etsitty = loydetyt.get(indeksi);
-            naytaArviot(etsitty);
+            naytaArviot(etsitty);   
         }
     }
 
@@ -91,7 +81,7 @@ public class Aloitus {
             System.out.println("Viinistä ei ole arvioita");
         } else {
             for (Arvio arvio : loydetyt) {
-                arvio.toString();
+                System.out.println(arvio.toString());
             }
         }
     }
@@ -109,7 +99,13 @@ public class Aloitus {
             System.out.print("Käyttyjätunnus varattu. Anna uusi tunnus: ");
             tunnus = lukija.nextLine();
         }
-        Kayttaja uusi = new Kayttaja(nimi, tunnus);
+        System.out.print("Anna salasana(5-15 merkkiä): ");
+        String salasana = lukija.nextLine();
+        while (salasana.length() > 15 || salasana.length() < 5) {
+            System.out.print("Salasanan tulee olla 5-15 merkkiä pitkä. Anna uusi salasana: ");
+            salasana = lukija.nextLine();
+        }
+        Kayttaja uusi = new Kayttaja(nimi, tunnus, salasana);
         toiminnot.lisaaKayttaja(uusi);
     }
 
@@ -123,5 +119,24 @@ public class Aloitus {
             this.kayttaja = k;
             kirjautunut = true;
         }
+    }
+    private Viini etsiViini() {
+        Viini etsitty = null;
+        String hakusana = lukija.nextLine();
+        ArrayList<Viini> loydetyt = toiminnot.etsiViineja(hakusana);
+        if (loydetyt.isEmpty()) {
+            return etsitty;
+        } else {
+            int nro = 1;
+            System.out.println("Löytyi seuraavat viinit");
+            for (Viini viini : loydetyt) {
+                System.out.println(nro + " - " + viini.lyhytToString());
+                nro++;
+            }
+            System.out.print("Anna etsimäsi viinin numero: ");
+            int indeksi = Integer.parseInt(lukija.nextLine()) - 1;
+            etsitty = loydetyt.get(indeksi);
+        }
+        return etsitty;
     }
 }

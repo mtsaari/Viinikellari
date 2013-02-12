@@ -29,6 +29,9 @@ public class Hankinta implements Comparable<Hankinta>{
             maara--;
         }
     }
+    public String getTunnus() {
+        return tunnus;
+    }
     public int getMaara() {
         return maara;
     }
