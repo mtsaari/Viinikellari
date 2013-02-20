@@ -4,7 +4,7 @@
  */
 package KayttoliittymaTestit;
 
-import Kayttoliittyma.Tiedostonkasittely;
+import Tiedostonkasittely.Tiedostonkasittely;
 import Sovelluslogiikka.Arvio;
 import Sovelluslogiikka.Hankinta;
 import Sovelluslogiikka.Kayttaja;
@@ -55,15 +55,15 @@ public class TiedostonkasittelyTest {
         this.toiminnot = new Kellaritoiminnot();
         this.k1 = new Kayttaja("Mikko Talvensaari", "mikko", "mtsaari");
         this.k2 = new Kayttaja("Erkki Aro", "eki", "77HHgtfaf");
-        this.v1 = new Viini("puna", "mieto", "Syrah", "2010", "Ranska",
-                "Pohjois-Rhone", "St Joseph", "Delas", "Francois de Tournon");
-        this.v2 = new Viini("puna", "mieto", "Pinot Noir", "2010", "Ranska",
-                "Burgundi", "Mercurey", "Faiveley", "Clos des Myglands");
-        this.v3 = new Viini("valko", "makea", "Riesling", "2011", "Saksa",
-                "Nahe", "-", "Dönnhoff", "Oberhauser Leistenberg Riesling Kabinett");
-        this.h1 = new Hankinta(v1, k1.getKayttajatunnus(), 4, 750, new Paivays(13, 1, 2013));
-        this.h2 = new Hankinta(v2, k1.getKayttajatunnus(), 3, 750, new Paivays(13, 1, 2013));
-        this.h3 = new Hankinta(v3, k2.getKayttajatunnus(), 3, 750, new Paivays(20, 11, 2012));
+        this.v1 = new Viini("Punainen","Mieto","Syrah","2010","Ranska",
+                "Pohjois-Rhone","St Joseph","Delas","Francois de Tournon",13);
+        this.v2 = new Viini("Punainen", "Mieto", "Pinot Noir", "2010", "Ranska",
+                "Burgundi", "Mercurey", "Faiveley", "Clos des Myglands",13);
+        this.v3 = new Viini("Valkoinen", "Makea", "Riesling", "2011", "Saksa",
+                "Nahe", "-", "Dönnhoff", "Oberhauser Leistenberg Riesling Kabinett",10.5);
+        this.h1 = new Hankinta(v1, k1.getKayttajatunnus(),4,750, new Paivays(13,1,2013),"Vinexus",29.80);
+        this.h2 = new Hankinta(v2, k1.getKayttajatunnus(),3,750, new Paivays(13,1,2013),"Vinexus",19.90);
+        this.h3 = new Hankinta(v3, k2.getKayttajatunnus(), 3, 750, new Paivays(20,11,2012),"Noble Wine",12.80);
         this.arvio1 = new Arvio(v2.getAvain(), "mikko", new Paivays(5, 2, 2013), 91,
                 "Todella seksikäs Pinot Noir ja hintakin kohtuullinen");
         this.arvio2 = new Arvio(v2.getAvain(), "eki", new Paivays(4, 2, 2013), 59, "Tämä oli ihan kuraa");
@@ -133,6 +133,7 @@ public class TiedostonkasittelyTest {
         toiminnot.lisaaHankintalista(tyhjalista);
         toiminnot.lisaaHankintalista(kasittely.kopioiHankinnat());
         assertEquals(true, kopio.get(k1.getKayttajatunnus()).size() ==toiminnot.getHankinnat().get(k1.getKayttajatunnus()).size());
+        
     }
     private void luoTiedostot() {
         try {

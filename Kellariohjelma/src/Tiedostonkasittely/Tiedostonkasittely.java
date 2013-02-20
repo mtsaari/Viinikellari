@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package Kayttoliittyma;
+package Tiedostonkasittely;
 
 import Sovelluslogiikka.Arvio;
 import Sovelluslogiikka.Hankinta;
@@ -29,6 +29,7 @@ public class Tiedostonkasittely {
         this.arviotiedosto = "arviot.txt";
         this.hankintatiedosto = "hankinnat.txt";
         this.kayttajatiedosto = "kayttajat.txt";
+        luoTiedostot();
                 
     }
 
@@ -37,6 +38,20 @@ public class Tiedostonkasittely {
         this.arviotiedosto = nimet[1];
         this.kayttajatiedosto = nimet[2];
         this.hankintatiedosto = nimet[3];
+    }
+    private void luoTiedostot() {
+        try {
+        File viinit = new File(viinitiedosto);
+        File arviot = new File(arviotiedosto);
+        File kayttajat = new File(kayttajatiedosto);
+        File hankinnat = new File(hankintatiedosto);
+        viinit.createNewFile();
+        arviot.createNewFile();
+        kayttajat.createNewFile();
+        hankinnat.createNewFile();
+        } catch (IOException e) {
+            
+        }
     }
 
     public void kirjoitaViinit(HashMap<String, Viini> lista) {

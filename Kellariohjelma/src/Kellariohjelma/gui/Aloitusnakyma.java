@@ -4,17 +4,35 @@
  */
 package Kellariohjelma.gui;
 
+import Sovelluslogiikka.Arvio;
+import Sovelluslogiikka.Hankinta;
+import Sovelluslogiikka.Kayttaja;
+import Sovelluslogiikka.Kellaritoiminnot;
+import Sovelluslogiikka.Viini;
+import java.util.ArrayList;
+import java.util.Collections;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author mikko
  */
 public class Aloitusnakyma extends javax.swing.JFrame {
 
-    /**
-     * Creates new form Aloitusnakyma
-     */
-    public Aloitusnakyma() {
+    private Kellaritoiminnot toiminnot;
+    private boolean kirjautunut;
+    private Kayttaja kayttaja;
+
+    public Aloitusnakyma(Kellaritoiminnot toiminnot) {
         initComponents();
+        this.toiminnot = toiminnot;
+        this.kirjautunut = false;
+        this.kayttaja = null;
+
+    }
+
+    public void run() {
+        setVisible(true);
     }
 
     /**
@@ -31,14 +49,19 @@ public class Aloitusnakyma extends javax.swing.JFrame {
         label1 = new java.awt.Label();
         choice1 = new java.awt.Choice();
         jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jPasswordField1 = new javax.swing.JPasswordField();
         jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        jButton2 = new javax.swing.JButton();
+        jLabelKirjautunut = new javax.swing.JLabel();
+        jComboBox2 = new javax.swing.JComboBox();
+        jLabel5 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jList1 = new javax.swing.JList();
+        jComboBox1 = new javax.swing.JComboBox();
         jButton3 = new javax.swing.JButton();
-        jLabel3 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        jTextPane1 = new javax.swing.JTextPane();
 
         button1.setLabel("button1");
 
@@ -48,84 +71,124 @@ public class Aloitusnakyma extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jTextField1.setText("jTextField1");
-
-        jTextField2.setText("jTextField2");
-
-        jPasswordField1.setText("jPasswordField1");
-
-        jButton1.setText("Etsi viiniarvioita");
+        jButton1.setText("Etsi viinejä");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
 
-        jButton2.setText("Kirjaudu sisään");
-
+        jLabel1.setFont(new java.awt.Font("Ubuntu", 1, 24)); // NOI18N
         jLabel1.setText("Viinikellari");
 
-        jLabel2.setText("Salasana:");
+        jButton2.setText("Ok");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
-        jButton3.setText("Luo Käyttäjätunnus");
+        jLabelKirjautunut.setText("Et ole kirjautunut");
 
-        jLabel3.setText("Käyttäjätunnus");
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Kirjaudu sisään", "Luo käyttäjätunnus", "Kirjaudu ulos" }));
+
+        jLabel5.setText("Valitse toiminto");
+
+        jList1.setModel(new javax.swing.AbstractListModel() {
+            String[] strings = { "" };
+            public int getSize() { return strings.length; }
+            public Object getElementAt(int i) { return strings[i]; }
+        });
+        jList1.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                jList1ValueChanged(evt);
+            }
+        });
+        jScrollPane1.setViewportView(jList1);
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Näytä arviot" }));
+
+        jButton3.setText("Ok");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setText("Valitse viini ja toimenpide");
+
+        jTextPane1.setFont(new java.awt.Font("Ubuntu Mono", 0, 15)); // NOI18N
+        jScrollPane4.setViewportView(jTextPane1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(69, 69, 69)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(20, 20, 20)
-                        .addComponent(jLabel2)
-                        .addGap(3, 3, 3))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel3)
-                        .addGap(2, 2, 2)))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 915, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(8, 8, 8)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButton3)
+                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2))
+                        .addGap(31, 31, 31)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(30, 30, 30)
-                                .addComponent(jButton3))
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(jTextField1)
-                                    .addGap(60, 60, 60)
-                                    .addComponent(jButton1))
-                                .addGroup(layout.createSequentialGroup()
-                                    .addGap(2, 2, 2)
-                                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jButton2))))))
-                .addGap(166, 166, 166))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(40, 40, 40)
+                                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 294, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(104, 104, 104)
+                                        .addComponent(jLabelKirjautunut, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(39, 39, 39)
+                                        .addComponent(jButton1)))
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 540, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel5)
+                                    .addComponent(jButton2))
+                                .addGap(28, 28, 28))))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(30, 30, 30)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabelKirjautunut))
                 .addGap(27, 27, 27)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton1))
-                .addGap(128, 128, 128)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2)
-                    .addComponent(jLabel3))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton3)
-                    .addComponent(jLabel2))
-                .addContainerGap(81, Short.MAX_VALUE))
+                .addGap(30, 30, 30)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton2))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton3)))
+                .addGap(51, 51, 51)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(124, Short.MAX_VALUE))
         );
 
         pack();
@@ -133,43 +196,66 @@ public class Aloitusnakyma extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         String hakusanat = jTextField1.getText();
-        
-    }//GEN-LAST:event_jButton1ActionPerformed
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Aloitusnakyma.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Aloitusnakyma.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Aloitusnakyma.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Aloitusnakyma.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        ArrayList<Viini> lista = toiminnot.etsiViineja(hakusanat);
+        if (lista.isEmpty()) {
+            jTextPane1.setText("Hakusanalla ei löytynyt yhtään viiniä");
+            return;
         }
-        //</editor-fold>
+        Viini[] viinit = new Viini[lista.size()];
+        viinit = lista.toArray(viinit);
+        jList1.setListData(viinit);
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Aloitusnakyma().setVisible(true);
-            }
-        });
+    }//GEN-LAST:event_jButton1ActionPerformed
+    public Kellaritoiminnot getKellaritoiminnot() {
+        return toiminnot;
     }
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        String komento = (String) jComboBox2.getSelectedItem();
+        if (komento.equals("Kirjaudu sisään")) {
+            liitaKayttaja();
+        } else if (komento.equals("Luo käyttäjätunnus")) {
+            luoKayttajatunnus();
+        } else if (komento.equals("Kirjaudu ulos")) {
+            kirjauduUlos();
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        String komento = (String) jComboBox1.getSelectedItem();
+        if (komento.equals("Näytä arviot")) {
+            naytaArviot();
+        } else if (komento.equals("Lisää arvio")) {
+            lisaaArvio();
+        } else if (komento.equals("Lisää viini omaan kellariin")) {
+            lisaaHankinta();
+        } else if (komento.equals("Lisää viini")) {
+            lisaaViini();
+        } else if (komento.equals("Näytä oma kellari")) {
+            naytaOmaKellari();
+        } else if (komento.equals("Juo pullo")) {
+            juoPullo();
+        } else if (komento.equals("Poista hankinta")) {
+            poistaHankinta();
+        }
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jList1ValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jList1ValueChanged
+        if (jList1.getSelectedValue() != null) {
+            jComboBox1.removeAllItems();
+            jComboBox1.addItem("Näytä arviot");
+            if (kirjautunut) {
+                if (jList1.getSelectedValue().getClass().equals(Viini.class)) {
+                    jComboBox1.addItem("Lisää arvio");
+                } else if (jList1.getSelectedValue().getClass().equals(Hankinta.class)) {
+                    jComboBox1.addItem("Juo pullo");
+                    jComboBox1.addItem("Poista hankinta");                    
+                }
+                jComboBox1.addItem("Lisää viini");
+                jComboBox1.addItem("Näytä oma kellari");
+                jComboBox1.addItem("Lisää viini omaan kellariin");
+            }
+        }
+    }//GEN-LAST:event_jList1ValueChanged
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private java.awt.Button button1;
     private java.awt.Button button2;
@@ -177,12 +263,170 @@ public class Aloitusnakyma extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JComboBox jComboBox1;
+    private javax.swing.JComboBox jComboBox2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JPasswordField jPasswordField1;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabelKirjautunut;
+    private javax.swing.JList jList1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
+    private javax.swing.JTextPane jTextPane1;
     private java.awt.Label label1;
     // End of variables declaration//GEN-END:variables
+
+    private void luoKayttajatunnus() {
+        UusiKayttaja luo = new UusiKayttaja(this, true, toiminnot);
+        while (!luo.getKayttajaluotu()) {
+            luo.setVisible(true);
+        }
+        Kayttaja uusi = luo.getKayttaja();
+        if (uusi != null) {
+            toiminnot.lisaaKayttaja(uusi);
+        }
+    }
+
+    private void liitaKayttaja() {
+        Sisaankirjautuminen kirj = new Sisaankirjautuminen(this, true, toiminnot);
+        while (!kirj.getKirjautunut()) {
+            kirj.setVisible(true);
+        }
+        Kayttaja uusi = kirj.getKayttaja();
+        if (uusi != null) {
+            this.kayttaja = uusi;
+            uusi.liitaKellari(toiminnot.etsiKayttajanKellari(kayttaja.getKayttajatunnus()));
+            kirjaudu();
+        }
+    }
+
+    private void kirjaudu() {
+        this.kirjautunut = true;
+        jLabelKirjautunut.setText("Käyttäjä: " + kayttaja.getKayttajatunnus());
+        jComboBox1.addItem("Näytä oma kellari");
+        jComboBox1.addItem("Lisää viini");
+
+    }
+
+    private void naytaArviot() {
+        Viini viini = viiniValittu();
+        if (viini == null) {
+            return;
+        }
+        String teksti = viini.pitkaToString();
+        ArrayList<Arvio> lista = toiminnot.etsiArvioita(viini.getAvain());
+        if (lista == null) {
+            jTextPane1.setText(teksti + "Viinistä ei ole arvioita");
+            return;
+        }
+
+        for (Arvio arvio : lista) {
+            teksti += arvio.toString();
+        }
+        jTextPane1.setText(teksti);
+    }
+
+    private void virheilmoitus(String ilmoitus) {
+        JOptionPane.showMessageDialog(this, ilmoitus);
+    }
+
+    private void lisaaArvio() {
+        Viini viini = viiniValittu();
+        if (viini == null) {
+            return;
+        }
+        UusiArvio uusi = new UusiArvio(this, true, toiminnot, viini.getAvain(), kayttaja.getKayttajatunnus());
+        while (!uusi.getArvioLuotu()) {
+            uusi.setVisible(true);
+        }
+        Arvio arvio = uusi.getArvio();
+        toiminnot.lisaaArvio(viini.getAvain(), arvio);
+    }
+
+    private void lisaaViini() {
+        UusiViini uusi = new UusiViini(this, true);
+        while (!uusi.getViiniLuotu()) {
+            uusi.setVisible(true);
+        }
+        Viini viini = uusi.getViini();
+        if (viini != null) {
+            toiminnot.lisaaViini(viini);
+        }
+    }
+
+    private Viini viiniValittu() {
+        if (jList1.getSelectedValue() == null) {
+            virheilmoitus("Etsi ja valitse viini ensin");
+            return null;
+        }
+        if (jList1.getSelectedValue().getClass().equals(Viini.class)) {
+            return (Viini) jList1.getSelectedValue();
+        }
+        Hankinta h = (Hankinta) jList1.getSelectedValue();
+        return h.getViini();
+    }
+
+    private void lisaaHankinta() {
+        Viini viini = viiniValittu();
+        if (viini == null) {
+            return;
+        }
+        UusiHankinta uusi = new UusiHankinta(this, true, viini, kayttaja.getKayttajatunnus());
+        while (!uusi.gethankintaLuotu()) {
+            uusi.setVisible(true);
+        }
+        Hankinta h = uusi.getHankinta();
+        if (h != null) {
+            kayttaja.getKellari().add(h);
+        }
+    }
+
+    private void naytaOmaKellari() {
+        String kellari = kayttaja.toString();
+        String format = "%1$-10s %2$-70s %3$-9s %4$-8s %5$-8s";
+        String otsikot = String.format(format, "Lisätty", "Viini", "Pullo(ml)", "Ostettu", "Jäljellä");
+        if (!kayttaja.getKellari().isEmpty()) {
+            Collections.sort(kayttaja.getKellari());
+            kellari += otsikot + "\n";
+            jList1.setListData(kayttaja.getKellari().toArray());
+            for (Hankinta h : kayttaja.getKellari()) {
+                kellari += h.naytaHankinta() + "\n";
+            }
+        }
+        jTextPane1.setText(kellari);
+    }
+
+    private void kirjauduUlos() {
+        this.kirjautunut = false;
+        this.kayttaja = null;
+        jComboBox1.removeAllItems();
+        jList1.removeAll();
+        jTextPane1.setText("");
+        jComboBox1.addItem("Näytä arviot");
+        jLabelKirjautunut.setText("Et ole kirjautunut");
+    }
+
+    private void juoPullo() {
+        if (jList1.getSelectedValue() == null) {
+            virheilmoitus("Valitse ensin viini jonka haluat juoda");
+            return;
+        }
+        Hankinta h = (Hankinta) jList1.getSelectedValue();
+        h.kulutaPullo();
+        if (h.getJaljella() == 0) {
+            kayttaja.getKellari().remove(h);
+        }
+        naytaOmaKellari();
+    }
+
+    private void poistaHankinta() {
+        Hankinta h = (Hankinta) jList1.getSelectedValue();
+        String ilm = "Haluatko varmasti poistaa kellaristasi valitun hankinnan";
+        int vast = JOptionPane.showConfirmDialog(this, ilm, "Poista hankinta", JOptionPane.YES_NO_OPTION);
+        if (vast == JOptionPane.YES_OPTION) {
+            kayttaja.getKellari().remove(h);
+            naytaOmaKellari();
+        }
+    }
 }

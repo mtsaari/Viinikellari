@@ -28,12 +28,12 @@ public class ViiniTest {
     
     @Before
     public void setUp() {
-        viini1 = new Viini("puna", "mieto","Syrah","2010","Ranska",
-                "Pohjois-Rhone","St Joseph","Delas","Francois de Tournon");
-        this.v2 = new Viini("puna", "mieto", "Pinot Noir", "2010", "Ranska",
-                 "Burgundi", "Mercurey", "Faiveley", "Clos des Myglands");
-        this.v3 = new Viini("valko", "makea", "Riesling", "2011", "Saksa",
-                 "Nahe", "-","Dönnhoff", "Oberhauser Leistenberg Riesling Kabinett");
+        viini1 = new Viini("Punainen", "Mieto","Syrah","2010","Ranska",
+                "Pohjois-Rhone","St Joseph","Delas","Francois de Tournon",13);
+        this.v2 = new Viini("Punainen", "Mieto", "Pinot Noir", "2010", "Ranska",
+                 "Burgundi", "Mercurey", "Faiveley", "Clos des Myglands",13);
+        this.v3 = new Viini("Valkoinen", "Makea", "Riesling", "2011", "Saksa",
+                 "Nahe", "-","Dönnhoff", "Oberhauser Leistenberg Riesling Kabinett",11);
     }
     @Test
     public void compareToMetodiJarjestaaViinitVuosikerranTuottajanPullotteenMukaan() {
@@ -48,11 +48,11 @@ public class ViiniTest {
     }
     @Test
     public void equalsMetodiToimii() {
-        Viini viini2 =  new Viini("puna","mieto","Syrah","2010","Ranska",
-                "Pohjois-Rhone","St Joseph","Delas","Francois de Tournon");
+        Viini viini2 =  new Viini("Punainen","Mieto","Syrah","2010","Ranska",
+                "Pohjois-Rhone","St Joseph","Delas","Francois de Tournon",13);
         assertEquals(true, viini1.equals(viini2));
-        Viini viini3 = new Viini("puna","mieto","Syrah","2009","Ranska",
-                "Pohjois-Rhone","St Joseph","Delas","Francois de Tournon");
+        Viini viini3 = new Viini("Punainen","Mieto","Syrah","2009","Ranska",
+                "Pohjois-Rhone","St Joseph","Delas","Francois de Tournon",13);
         assertEquals(false, viini3.equals(viini1));
     }
     @Test 

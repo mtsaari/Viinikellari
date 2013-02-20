@@ -20,10 +20,22 @@ public class Viini implements Comparable<Viini>{
     private String pullote;
     private String rypalelaji;
     private String avain;
+    private double alkoholi;
     
-
+    /**
+     * luo uuden Viini-olion parametrina 9 merkkijonoa.
+     * @param vari 
+     * @param tyyli
+     * @param rypalelaji
+     * @param vuosikerta
+     * @param maa
+     * @param alue
+     * @param alkupera
+     * @param tuottaja
+     * @param pullote 
+     */
     public Viini(String vari, String tyyli, String rypalelaji, String vuosikerta,
-            String maa, String alue, String alkupera, String tuottaja, String pullote) {
+            String maa, String alue, String alkupera, String tuottaja, String pullote, double alkoholi) {
         luoAvain();
         vari(vari);
         tyyli(tyyli);
@@ -34,9 +46,12 @@ public class Viini implements Comparable<Viini>{
         this.pullote = pullote;
         this.alkupera = alkupera;
         this.rypalelaji = rypalelaji;
-     
-        
+        this.alkoholi = alkoholi;
     }
+    /**
+     * Luo uuden Viini-olion parametrina tiedostomuoto-merkkijono
+     * @param b String tiedostomuoto, jossa kenttien arvot on erotettu "¤"-merkillä.
+     */
     public Viini(String b) {
         String[] a = b.split("¤");
         this.avain = a[0];
@@ -47,29 +62,40 @@ public class Viini implements Comparable<Viini>{
         this.alue = a[6];
         this.alkupera = a[7];
         this.tuottaja = a[8];
-        this.pullote = a[9];   
+        this.pullote = a[9];
+        this.alkoholi = Double.parseDouble(a[10]);
         
     }
-    private boolean tyyli(String t) {                
-        if (t.equals("mieto")) {
+    /**
+     * asettaa Tyyli-attribuutin merkkijonon perusteella
+     * @param tyyli merkkijono
+     * @return true, jos parametrina oleva merkkijono on oikeaa muotoa
+     */
+    private boolean tyyli(String tyyli) {                
+        if (tyyli.equals("Mieto")) {
             this.tyyli = Tyyli.MIETO;
-        }   else if (t.equals("kuohuva")) {
+        }   else if (tyyli.equals("Kuohuva")) {
             this.tyyli = Tyyli.KUOHUVA;
-        }   else if (t.equals("vakeva")) {
+        }   else if (tyyli.equals("Väkevä")) {
             this.tyyli = Tyyli.VAKEVA;
-        }   else if (t.equals("makea")) {
+        }   else if (tyyli.equals("Makea")) {
             this.tyyli = Tyyli.MAKEA;
         }   else {
             return false;            
         }
         return true;
     }
+    /**
+     * asettaa Vari-attribuutin merkkijonon perusteella
+     * @param vari merkkijono
+     * @return true, vain jos parametrina oleva merkkijono on muotoa "puna","valko","rose"
+     */
     private boolean vari(String vari) {    
-        if (vari.equals("puna")) {
+        if (vari.equals("Punainen")) {
             this.vari = Vari.PUNAINEN;
-        }   else if (vari.equals("valko")) {
+        }   else if (vari.equals("Valkoinen")) {
             this.vari = Vari.VALKOINEN;
-        }   else if (vari.equals("rose")) {
+        }   else if (vari.equals("Rosé")) {
             this.vari = Vari.ROSE;
         }   else    {
             return false;
@@ -77,10 +103,19 @@ public class Viini implements Comparable<Viini>{
         }
         return true; 
     }
+    /**
+     * luo Viini-oliosta merkkijonon, joka talletetaan tiedostoon
+     * ja jonka avulla ohjelma kopioi olion tiedostosta
+     * @return merkkijono
+     */
     public String tiedostomuoto() { 
         return avain+"¤"+vari+"¤"+tyyli+"¤"+rypalelaji+"¤"+vuosikerta
-                +"¤"+maa+"¤"+alue+"¤"+alkupera+"¤"+tuottaja+"¤"+pullote;
+                +"¤"+maa+"¤"+alue+"¤"+alkupera+"¤"+tuottaja+"¤"+pullote+"¤"+alkoholi;
     }
+    /**
+     * metodi luo Viini-oliolle 10-merkkisen satunnaisen merkkijonon, 
+     * joka toimii Viinit ja Arviot sisältävien HashMap-olioiden avaimena
+     */
     private void luoAvain() {
         String a = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM";
         Random r = new Random();
@@ -93,8 +128,7 @@ public class Viini implements Comparable<Viini>{
     public String getAvain() {
         return avain;
     }
-    @Override
-    public String toString() {
+    public String pitkaToString() {
         return "Vuosikerta:         " + vuosikerta + "\n"
                 + "Vari:               " + vari.toString() + "\n" 
                 + "Tyyli:              " + tyyli.toString() + "\n"
@@ -103,11 +137,12 @@ public class Viini implements Comparable<Viini>{
                 + "Pullote             " + pullote + "\n"
                 + "Maa                 " + maa + "\n"
                 + "Alue                " + alue + "\n"
-                + "Alkuperämerkintä    " + alkupera + "\n" + "\n";
+                + "Alkuperämerkintä    " + alkupera + "\n\n";
                 
     }
 
-    public String lyhytToString() {
+    @Override
+    public String toString() {
         return vuosikerta + " " + tuottaja + " " + alkupera + " " + pullote;
     }
     

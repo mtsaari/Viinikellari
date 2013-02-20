@@ -69,4 +69,5 @@ public class PaivaysTest {
         Paivays uusi = new Paivays("04.09.2012");
         assertEquals("4.9.2012", uusi.toString());
     }
+    
 }

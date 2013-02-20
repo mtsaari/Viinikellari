@@ -40,9 +40,9 @@ public class Arvio implements Comparable<Arvio>{
     }
     @Override
     public String toString() {
-        return "Maistaja    "+ maistaja +"\n"+
-               "Pvm         "+ paivays.toString()+"\n"+
-               "Pisteet     "+ pisteet+"\n"+kuvaus+"\n";
+        String format = "%1$-16s %2$-30s %3$-15s";
+        String tiedot = String.format(format,"Pvm: "+paivays.toString(), "Maistaja: "+ maistaja,"Pisteet: "+ pisteet);
+        return  tiedot+"\n"+kuvaus+"\n\n";
                 
     }
     public String tiedostomuoto() {
