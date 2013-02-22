@@ -9,6 +9,8 @@ import Sovelluslogiikka.Kellaritoiminnot;
 import javax.swing.JOptionPane;
 
 /**
+ * luokka on käyttöliittymän elementti, jossa käyttäjä voi luoda uuden
+ * käyttäjätunnuksen
  *
  * @author mikko
  */
@@ -17,33 +19,43 @@ public class UusiKayttaja extends javax.swing.JDialog {
     private boolean kayttajaLuotu;
     private Kayttaja kayttaja;
     private Kellaritoiminnot toiminnot;
-    
-    
 
     /**
-     * Creates new form LuoKayttajatunnus
+     * luo uuden elementin
+     *
+     * @param parent
+     * @param modal
+     * @param kt parent-elementin tuntema Kellaritoiminnot-olio
      */
     public UusiKayttaja(java.awt.Frame parent, boolean modal, Kellaritoiminnot kt) {
         super(parent, modal);
         initComponents();
         this.kayttajaLuotu = false;
         this.toiminnot = kt;
-        
+
     }
 
+    /**
+     * lukee käyttäjän antaman syötteen ja luo uuden Kayttajan
+     */
     public void luoKayttaja() {
-        kayttajaLuotu = true;
         String nimi = jTextField1.getText();
         String tunnus = jTextField2.getText();
-        tarkistaTunnus(tunnus);
-        String salasana = new String(jPasswordField1.getPassword());
-        tarkistaSalasana(salasana);
-        String kopio = new String(jPasswordField2.getPassword());
-        tarkistaKopio(kopio, salasana);
-        if (kayttajaLuotu) {
-            Kayttaja uusi = new Kayttaja(nimi, tunnus, salasana);
-            this.kayttaja = uusi;
+        if (!tarkistaTunnus(tunnus)) {
+            return;
         }
+        String salasana = new String(jPasswordField1.getPassword());
+        if (!tarkistaSalasana(salasana)) {
+            return;
+        }
+        String kopio = new String(jPasswordField2.getPassword());
+        if (!tarkistaKopio(kopio, salasana)) {
+            return;
+        }
+        Kayttaja uusi = new Kayttaja(nimi, tunnus, salasana);
+        this.kayttaja = uusi;
+        this.kayttajaLuotu=true;
+
     }
 
     public boolean getKayttajaluotu() {
@@ -82,9 +94,9 @@ public class UusiKayttaja extends javax.swing.JDialog {
 
         jLabel1.setText("Nimi");
 
-        jLabel2.setText("Käyttäjätunnus (5-10 merkkiä):");
+        jLabel2.setText("Käyttäjätunnus (5-20 merkkiä):");
 
-        jLabel3.setText("Salasana(5-10 merkkiä):");
+        jLabel3.setText("Salasana(5-20 merkkiä):");
 
         jLabel4.setText("Vahvista Salasana:");
 
@@ -163,56 +175,13 @@ public class UusiKayttaja extends javax.swing.JDialog {
         if (kayttajaLuotu) {
             setVisible(false);
         }
-        
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        kayttajaLuotu=true;
+        kayttajaLuotu = true;
         setVisible(false);
     }//GEN-LAST:event_jButton2ActionPerformed
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(UusiKayttaja.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(UusiKayttaja.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(UusiKayttaja.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(UusiKayttaja.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the dialog 
-         java.awt.EventQueue.invokeLater(new Runnable() {
-         public void run() {
-         LuoKayttajatunnus dialog = new LuoKayttajatunnus(new javax.swing.JFrame(), true);
-         dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-         @Override
-         public void windowClosing(java.awt.event.WindowEvent e) {
-         System.exit(0);
-         }
-         });
-         dialog.setVisible(true);
-         }
-         });
-         }*/
-    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
@@ -226,29 +195,55 @@ public class UusiKayttaja extends javax.swing.JDialog {
     private javax.swing.JTextField jTextField2;
     // End of variables declaration//GEN-END:variables
 
-    private void tarkistaSalasana(String salasana) {
-        if (salasana.length() < 5 || salasana.length() > 10) {
-            virheilmoitus("Salasanassa tulee olla 5-10 merkkiä.");
-            kayttajaLuotu = false;
+    /**
+     * tarkistaa salasanan pituuden
+     *
+     * @param salasana käyttäjän syöttämä salasana
+     */
+    private boolean tarkistaSalasana(String salasana) {
+        if (salasana.length() < 5 || salasana.length() > 20) {
+            virheilmoitus("Salasanassa tulee olla 5-20 merkkiä.");
+            return false;
         }
+        return true;
     }
 
-    private void tarkistaTunnus(String tunnus) {
-        if (tunnus.length() > 10 || tunnus.length() < 5) {
-            virheilmoitus("Tunnuksessa tulee olla 5-10 merkkiä.");
-            kayttajaLuotu = false;
-        } else if(!toiminnot.kayttajatunnusVapaa(tunnus)) {
+    /**
+     * tarkistaa tunnuksen pituuden ja onko se varattu
+     *
+     * @param tunnus käyttäjän syöttämä käyttäjätunnus
+     */
+    private boolean tarkistaTunnus(String tunnus) {
+        if (tunnus.length() > 20 || tunnus.length() < 5) {
+            virheilmoitus("Tunnuksessa tulee olla 5-20 merkkiä.");
+            return false;
+        }
+        if (!toiminnot.kayttajatunnusVapaa(tunnus)) {
             virheilmoitus("Käyttäjätunnus on varattu.");
-            kayttajaLuotu = false;
+            return false;
         }
+        return true;
     }
 
-    private void tarkistaKopio(String kopio, String salasana) {
+    /**
+     * tarkistaa että salasanan varmennus on sama kuin salasana
+     *
+     * @param kopio käyttäjän syöttämä varmennus
+     * @param salasana käyttäjän syöttämä salasana
+     */
+    private boolean tarkistaKopio(String kopio, String salasana) {
         if (!kopio.equals(salasana)) {
             virheilmoitus("Salasanan vahvistus ei täsmää.");
-            kayttajaLuotu = false;
+            return false;
         }
+        return true;
     }
+
+    /**
+     * näyttää käyttäjälle virheilmoituksen
+     *
+     * @param ilmoitus virheilmoituksen teksti
+     */
     private void virheilmoitus(String ilmoitus) {
         JOptionPane.showMessageDialog(this, ilmoitus);
     }

@@ -1,17 +1,15 @@
-
 package Sovelluslogiikka;
-
 
 import java.util.Random;
 
-
 /**
- *
+ * 
  * @author mikko
  */
-public class Viini implements Comparable<Viini>{
-    private Vari vari;
-    private Tyyli tyyli;
+public class Viini implements Comparable<Viini> {
+
+    private String vari;
+    private String tyyli;
     private String vuosikerta;
     private String maa;
     private String alue;
@@ -21,10 +19,14 @@ public class Viini implements Comparable<Viini>{
     private String rypalelaji;
     private String avain;
     private double alkoholi;
-    
+
     /**
-     * luo uuden Viini-olion parametrina 9 merkkijonoa.
-     * @param vari 
+     * luo uuden Viini-olion parametrina 9 merkkijonoa. Tätä konstruktoria
+     * käytettäessä viinille luodaan avain, joka on satunnainen 10 merkin
+     * pituinen merkkijono. Avain toimii avaimena sekä Viinit että Arviot
+     * sisältävässä HashMapissa.
+     *
+     * @param vari
      * @param tyyli
      * @param rypalelaji
      * @param vuosikerta
@@ -32,13 +34,13 @@ public class Viini implements Comparable<Viini>{
      * @param alue
      * @param alkupera
      * @param tuottaja
-     * @param pullote 
+     * @param pullote
      */
     public Viini(String vari, String tyyli, String rypalelaji, String vuosikerta,
             String maa, String alue, String alkupera, String tuottaja, String pullote, double alkoholi) {
         luoAvain();
-        vari(vari);
-        tyyli(tyyli);
+        this.vari = vari;
+        this.tyyli = tyyli;
         this.maa = maa;
         this.vuosikerta = vuosikerta;
         this.alue = alue;
@@ -48,14 +50,18 @@ public class Viini implements Comparable<Viini>{
         this.rypalelaji = rypalelaji;
         this.alkoholi = alkoholi;
     }
+
     /**
      * Luo uuden Viini-olion parametrina tiedostomuoto-merkkijono
-     * @param b String tiedostomuoto, jossa kenttien arvot on erotettu "¤"-merkillä.
+     *
+     * @param b String tiedostomuoto, jossa kenttien arvot on erotettu
+     * "¤"-merkillä.
      */
     public Viini(String b) {
         String[] a = b.split("¤");
         this.avain = a[0];
-        this.vari = Vari.valueOf(a[1]); this.tyyli = Tyyli.valueOf(a[2]);
+        this.vari = a[1];
+        this.tyyli = a[2];
         this.rypalelaji = a[3];
         this.vuosikerta = a[4];
         this.maa = a[5];
@@ -64,57 +70,23 @@ public class Viini implements Comparable<Viini>{
         this.tuottaja = a[8];
         this.pullote = a[9];
         this.alkoholi = Double.parseDouble(a[10]);
-        
+
     }
+
     /**
-     * asettaa Tyyli-attribuutin merkkijonon perusteella
-     * @param tyyli merkkijono
-     * @return true, jos parametrina oleva merkkijono on oikeaa muotoa
-     */
-    private boolean tyyli(String tyyli) {                
-        if (tyyli.equals("Mieto")) {
-            this.tyyli = Tyyli.MIETO;
-        }   else if (tyyli.equals("Kuohuva")) {
-            this.tyyli = Tyyli.KUOHUVA;
-        }   else if (tyyli.equals("Väkevä")) {
-            this.tyyli = Tyyli.VAKEVA;
-        }   else if (tyyli.equals("Makea")) {
-            this.tyyli = Tyyli.MAKEA;
-        }   else {
-            return false;            
-        }
-        return true;
-    }
-    /**
-     * asettaa Vari-attribuutin merkkijonon perusteella
-     * @param vari merkkijono
-     * @return true, vain jos parametrina oleva merkkijono on muotoa "puna","valko","rose"
-     */
-    private boolean vari(String vari) {    
-        if (vari.equals("Punainen")) {
-            this.vari = Vari.PUNAINEN;
-        }   else if (vari.equals("Valkoinen")) {
-            this.vari = Vari.VALKOINEN;
-        }   else if (vari.equals("Rosé")) {
-            this.vari = Vari.ROSE;
-        }   else    {
-            return false;
-            
-        }
-        return true; 
-    }
-    /**
-     * luo Viini-oliosta merkkijonon, joka talletetaan tiedostoon
-     * ja jonka avulla ohjelma kopioi olion tiedostosta
+     * luo Viini-oliosta merkkijonon, joka talletetaan tiedostoon ja jonka
+     * avulla ohjelma kopioi olion tiedostosta
+     *
      * @return merkkijono
      */
-    public String tiedostomuoto() { 
-        return avain+"¤"+vari+"¤"+tyyli+"¤"+rypalelaji+"¤"+vuosikerta
-                +"¤"+maa+"¤"+alue+"¤"+alkupera+"¤"+tuottaja+"¤"+pullote+"¤"+alkoholi;
+    public String tiedostomuoto() {
+        return avain + "¤" + vari + "¤" + tyyli + "¤" + rypalelaji + "¤" + vuosikerta
+                + "¤" + maa + "¤" + alue + "¤" + alkupera + "¤" + tuottaja + "¤" + pullote + "¤" + alkoholi;
     }
+
     /**
-     * metodi luo Viini-oliolle 10-merkkisen satunnaisen merkkijonon, 
-     * joka toimii Viinit ja Arviot sisältävien HashMap-olioiden avaimena
+     * metodi luo Viini-oliolle 10-merkkisen satunnaisen merkkijonon, joka
+     * toimii Viinit ja Arviot sisältävien HashMap-olioiden avaimena
      */
     private void luoAvain() {
         String a = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM";
@@ -125,12 +97,59 @@ public class Viini implements Comparable<Viini>{
         }
         this.avain = s;
     }
+
     public String getAvain() {
         return avain;
     }
+
+    /**
+     * asettaa Viinille uuden avaimen
+     *
+     * @param avain merkkijono
+     */
+    public void asetaAvain(String avain) {
+        this.avain = avain;
+    }
+
+    /**
+     * tarkastaa vastaako mahdollisesti useita sanoja sisältävä
+     * hakusana-merkkijono viinin attribuutteja
+     *
+     * @param sana String käyttäjän antama hakusana
+     * @return palauttaa true vain jos hakusana merkkijonon kaikki sanat
+     * vastaavat jotakin viinin attribuuttia
+     */
+    public boolean hakuOsuma(String sana) {
+        String[] hakusanat = sana.split(" ");
+        String[] attribuutit = this.tiedostomuoto().split("¤");
+        int samat = 0;
+        for (int i = 0; i < hakusanat.length; i++) {
+            for (int j = 0; j < attribuutit.length; j++) {
+                String[] osat = attribuutit[j].split(" ");
+                if (osat.length == 1) {
+                    osat = attribuutit[j].split("-");
+                }
+                for (int k = 0; k < osat.length; k++) {
+                    if (hakusanat[i].equalsIgnoreCase(osat[k])) {
+                        samat++;
+                    }
+                }
+            }
+        }
+        if (samat < hakusanat.length) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * merkkijono, joka esittää viinin attribuutit kattavasti
+     *
+     * @return String
+     */
     public String pitkaToString() {
         return "Vuosikerta:         " + vuosikerta + "\n"
-                + "Vari:               " + vari.toString() + "\n" 
+                + "Vari:               " + vari.toString() + "\n"
                 + "Tyyli:              " + tyyli.toString() + "\n"
                 + "Tuottaja:           " + tuottaja + "\n"
                 + "Rypälelaji          " + rypalelaji + "\n"
@@ -138,14 +157,14 @@ public class Viini implements Comparable<Viini>{
                 + "Maa                 " + maa + "\n"
                 + "Alue                " + alue + "\n"
                 + "Alkuperämerkintä    " + alkupera + "\n\n";
-                
+
     }
 
     @Override
     public String toString() {
         return vuosikerta + " " + tuottaja + " " + alkupera + " " + pullote;
     }
-    
+
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {
@@ -198,7 +217,7 @@ public class Viini implements Comparable<Viini>{
 
     @Override
     public int compareTo(Viini t) {
-        if(!this.vuosikerta.equals("nv")) {
+        if (!this.vuosikerta.equals("nv")) {
             int tamaVk = Integer.parseInt(this.vuosikerta);
             int tuoVk = Integer.parseInt(t.vuosikerta);
             if (tamaVk > tuoVk) {
@@ -208,10 +227,9 @@ public class Viini implements Comparable<Viini>{
                 return 1;
             }
         }
-        if(this.tuottaja.compareTo(t.tuottaja)!=0) {
+        if (this.tuottaja.compareTo(t.tuottaja) != 0) {
             return this.tuottaja.compareTo(t.tuottaja);
         }
         return this.pullote.compareTo(t.pullote);
     }
-    
 }

@@ -15,6 +15,13 @@ public class Paivays implements Comparable<Paivays> {
     private int kuukausi;
     private int vuosi;
 
+    /**
+     * luo uuden Paivays olion kolmesta kokonaisluvusta
+     *
+     * @param paiva int
+     * @param kuukausi int
+     * @param vuosi int
+     */
     public Paivays(int paiva, int kuukausi, int vuosi) {
         this.vuosi = vuosi;
         this.kuukausi = kuukausi;
@@ -35,8 +42,6 @@ public class Paivays implements Comparable<Paivays> {
             this.vuosi = Integer.parseInt(a[2]);
         } catch (Exception e) {
         }
-        
-        
     }
 
     /**

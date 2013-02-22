@@ -8,6 +8,8 @@ import Sovelluslogiikka.Viini;
 import javax.swing.JOptionPane;
 
 /**
+ * Luokan avulla käyttäjä lisää uuden viinin järjestelmään tai muokkaa olemassa
+ * olevan viinin tietoja
  *
  * @author mikko
  */
@@ -17,12 +19,34 @@ public class UusiViini extends javax.swing.JDialog {
     private boolean viiniLuotu;
 
     /**
-     * Creates new form UusiViini
+     * luo uuden käyttöliittymäkomponentin, kun järjestelmään lisätään uusi
+     * Viini
+     *
+     * @param parent
+     * @param modal
      */
     public UusiViini(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         this.viiniLuotu = false;
+
+    }
+
+    /**
+     * konstruktoria käytetään kun muokataan olemassa olevaa Viiniä
+     *
+     * Tämä konstruktori asettaa luokan komponentteihin muokattavan viinin
+     * tiedot kutsumalla asetaTiedot-metodia
+     *
+     * @param parent
+     * @param modal
+     * @param tm merkkijono, muokattavan Viinin tiedostomuoto
+     */
+    public UusiViini(java.awt.Frame parent, boolean modal, String tm) {
+        super(parent, modal);
+        initComponents();
+        this.viiniLuotu = false;
+        asetaTiedot(tm);
     }
 
     public boolean getViiniLuotu() {
@@ -55,10 +79,11 @@ public class UusiViini extends javax.swing.JDialog {
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        jButtonValmis = new javax.swing.JButton();
         jTextFieldAlk = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
+        jButtonPalaa = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -84,10 +109,10 @@ public class UusiViini extends javax.swing.JDialog {
 
         jLabel9.setText("Rypälelaji:");
 
-        jButton1.setText("Valmis");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        jButtonValmis.setText("Valmis");
+        jButtonValmis.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                jButtonValmisActionPerformed(evt);
             }
         });
 
@@ -96,12 +121,19 @@ public class UusiViini extends javax.swing.JDialog {
         jLabel11.setFont(new java.awt.Font("Ubuntu", 0, 18)); // NOI18N
         jLabel11.setText("Anna viinin tiedot (\"-\", jos tietoa ei ole)");
 
+        jButtonPalaa.setText("Palaa");
+        jButtonPalaa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonPalaaActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(54, Short.MAX_VALUE)
+                .addContainerGap(85, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -139,8 +171,10 @@ public class UusiViini extends javax.swing.JDialog {
                             .addComponent(jTextFieldAlue, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(55, 55, 55))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jButton1)
-                        .addContainerGap())))
+                        .addComponent(jButtonValmis)
+                        .addGap(37, 37, 37)
+                        .addComponent(jButtonPalaa)
+                        .addGap(35, 35, 35))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -187,25 +221,33 @@ public class UusiViini extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextFieldAlk, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel10))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButtonValmis)
+                    .addComponent(jButtonPalaa)))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void jButtonValmisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonValmisActionPerformed
         luoViini();
         if (viiniLuotu) {
             setVisible(false);
 
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_jButtonValmisActionPerformed
+
+    private void jButtonPalaaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPalaaActionPerformed
+        viiniLuotu = true;
+        setVisible(false);
+    }//GEN-LAST:event_jButtonPalaaActionPerformed
     /**
      * @param args the command line arguments
      */
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButtonPalaa;
+    private javax.swing.JButton jButtonValmis;
     private javax.swing.JComboBox jComboBox1;
     private javax.swing.JComboBox jComboBox2;
     private javax.swing.JLabel jLabel1;
@@ -229,8 +271,13 @@ public class UusiViini extends javax.swing.JDialog {
     private javax.swing.JTextField jTextFieldVk;
     // End of variables declaration//GEN-END:variables
 
+    /**
+     * metodi lukee komponenttien syötteet ja luo uuden Viinin
+     *
+     * Ennen uuden viinin luomista käyttäjälle esitetään dialogiboksi, joka
+     * pyytää käyttäjää varmistamaan tämän antamat tiedot
+     */
     private void luoViini() {
-        viiniLuotu = true;
         String vari = (String) jComboBox1.getSelectedItem();
         String tyyli = (String) jComboBox2.getSelectedItem();
         String maa = jTextFieldMaa.getText();
@@ -243,24 +290,30 @@ public class UusiViini extends javax.swing.JDialog {
         String alkoholi = jTextFieldAlk.getText();
         if (!onkoNumero(alkoholi)) {
             virheilmoitus("Anna alkoholipitoisuus desimaalilukuna. Erota desimaalit pisteellä");
-            this.viiniLuotu = false;
             return;
         }
         double alk = alkoholi(alkoholi);
-        String ilm = "Valitse YES jos tiedot ovat oikein"+"\n"+"Vari: "+vari+"\n"
-                +"Tyyli: "+tyyli+"\n"+"Maa: "+maa+"\n"+"Alue: "+alue+"\n"+
-                "Tuottaja: "+tuottaja+"\n"+"Alkuperä: "+alkupera+"\n"+"Pullote: "+pullote+"\n"+
-                "Vuosikerta: "+vuosikerta+"\n"+"Rypälelaji: "+rypale+"\n"+"Alkoholi: "+alkoholi;
+        String ilm = "Valitse YES jos tiedot ovat oikein" + "\n" + "Vari: " + vari + "\n"
+                + "Tyyli: " + tyyli + "\n" + "Maa: " + maa + "\n" + "Alue: " + alue + "\n"
+                + "Tuottaja: " + tuottaja + "\n" + "Alkuperä: " + alkupera + "\n" + "Pullote: " + pullote + "\n"
+                + "Vuosikerta: " + vuosikerta + "\n" + "Rypälelaji: " + rypale + "\n" + "Alkoholi: " + alkoholi;
         int vast = JOptionPane.showConfirmDialog(this, ilm, "Varmistus", JOptionPane.YES_NO_OPTION);
-        if (vast==JOptionPane.NO_OPTION) {
-            this.viiniLuotu=false;
+        if (vast == JOptionPane.NO_OPTION) {
             return;
         }
         this.viini = new Viini(vari, tyyli, rypale, vuosikerta, maa,
                 alue, alkupera, tuottaja, pullote, alk);
-
+        this.viiniLuotu=true;
     }
 
+    /**
+     * tarkistaa onko käyttäjän syöttämä merkkijono muutettavissa double-luokan
+     * desimaalikuvuksi
+     *
+     * @param numero käyttäjän alkoholi -kenttään syöttämä merkkijono
+     * @return true jos merkkijono on muutettavissa double-olioksi tai jos
+     * merkkijono on "-"
+     */
     private boolean onkoNumero(String numero) {
         if (numero.equals("-")) {
             return true;
@@ -273,14 +326,47 @@ public class UusiViini extends javax.swing.JDialog {
         return true;
     }
 
+    /**
+     * esittää käyttäjälle JOptionPane-ilmoituksen virheellisestä syötteestä
+     *
+     * @param ilmoitus viesti käyttäjälle
+     */
     private void virheilmoitus(String ilmoitus) {
         JOptionPane.showMessageDialog(this, ilmoitus);
     }
 
+    /**
+     * luo käyttäjän antamasta merkkijonosta desimaaliluvun
+     *
+     * @param alkoholi
+     * @return jos käyttäjä on syöttänyt "-" palautetaan 0
+     */
     private double alkoholi(String alkoholi) {
         if (alkoholi.equals("-")) {
             return 0;
         }
         return Double.parseDouble(alkoholi);
+    }
+
+    /**
+     * asettaa luokan komponentteihin muokattavan viinin tiedot. Käytetään vain
+     * kun olemassa olevaa viiniä muokataan
+     *
+     * @param tm konstruktorin parametrina annettu muokattavan viinin
+     * tiedostomuoto-merkkijono
+     */
+    private void asetaTiedot(String tm) {
+        String[] s = tm.split("¤");
+        jComboBox1.setSelectedItem(s[1]);
+        jComboBox2.setSelectedItem(s[2]);
+        jTextFieldRyp.setText(s[3]);
+        jTextFieldVk.setText(s[4]);
+        jTextFieldMaa.setText(s[5]);
+        jTextFieldAlue.setText(s[6]);
+        jTextFieldAlkup.setText(s[7]);
+        jTextFieldTuot.setText(s[8]);
+        jTextFieldPull.setText(s[9]);
+        jTextFieldAlk.setText(s[10]);
+
     }
 }

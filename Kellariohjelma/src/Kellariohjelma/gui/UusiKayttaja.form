@@ -108,12 +108,12 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel2">
       <Properties>
-        <Property name="text" type="java.lang.String" value="K&#xe4;ytt&#xe4;j&#xe4;tunnus (5-10 merkki&#xe4;):"/>
+        <Property name="text" type="java.lang.String" value="K&#xe4;ytt&#xe4;j&#xe4;tunnus (5-20 merkki&#xe4;):"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel3">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Salasana(5-10 merkki&#xe4;):"/>
+        <Property name="text" type="java.lang.String" value="Salasana(5-20 merkki&#xe4;):"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel4">

@@ -14,6 +14,7 @@ import java.util.Collections;
 import javax.swing.JOptionPane;
 
 /**
+ * Käyttöliittymän pääluokka
  *
  * @author mikko
  */
@@ -23,6 +24,11 @@ public class Aloitusnakyma extends javax.swing.JFrame {
     private boolean kirjautunut;
     private Kayttaja kayttaja;
 
+    /**
+     * luo uuden graafisen käyttöliittymän
+     *
+     * @param toiminnot ohjelman tietoja hallinoiva Kellaritoiminnot-olio
+     */
     public Aloitusnakyma(Kellaritoiminnot toiminnot) {
         initComponents();
         this.toiminnot = toiminnot;
@@ -201,9 +207,7 @@ public class Aloitusnakyma extends javax.swing.JFrame {
             jTextPane1.setText("Hakusanalla ei löytynyt yhtään viiniä");
             return;
         }
-        Viini[] viinit = new Viini[lista.size()];
-        viinit = lista.toArray(viinit);
-        jList1.setListData(viinit);
+        jList1.setListData(lista.toArray());
 
     }//GEN-LAST:event_jButton1ActionPerformed
     public Kellaritoiminnot getKellaritoiminnot() {
@@ -236,23 +240,32 @@ public class Aloitusnakyma extends javax.swing.JFrame {
             juoPullo();
         } else if (komento.equals("Poista hankinta")) {
             poistaHankinta();
+        } else if (komento.equals("Muokkaa viinin tietoja")) {
+            muokkaaViinia();
+        } else if (komento.equals("Etsi viinejä omasta kellarista")) {
+            etsiOmastaKellarista();
         }
     }//GEN-LAST:event_jButton3ActionPerformed
-
+    /**
+     * Jlist elementin tapahtumakuuntelija. Kenttien teksti muuttuu sen mukaan
+     * minkä luokan olio on valittu JListista
+     *
+     */
     private void jList1ValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jList1ValueChanged
         if (jList1.getSelectedValue() != null) {
             jComboBox1.removeAllItems();
             jComboBox1.addItem("Näytä arviot");
             if (kirjautunut) {
-                if (jList1.getSelectedValue().getClass().equals(Viini.class)) {
-                    jComboBox1.addItem("Lisää arvio");
-                } else if (jList1.getSelectedValue().getClass().equals(Hankinta.class)) {
-                    jComboBox1.addItem("Juo pullo");
-                    jComboBox1.addItem("Poista hankinta");                    
-                }
                 jComboBox1.addItem("Lisää viini");
                 jComboBox1.addItem("Näytä oma kellari");
                 jComboBox1.addItem("Lisää viini omaan kellariin");
+                jComboBox1.addItem("Lisää arvio");
+                jComboBox1.addItem("Muokkaa viinin tietoja");
+                jComboBox1.addItem("Etsi viinejä omasta kellarista");
+                if (jList1.getSelectedValue().getClass().equals(Hankinta.class)) {
+                    jComboBox1.addItem("Juo pullo");
+                    jComboBox1.addItem("Poista hankinta");
+                }
             }
         }
     }//GEN-LAST:event_jList1ValueChanged
@@ -277,6 +290,9 @@ public class Aloitusnakyma extends javax.swing.JFrame {
     private java.awt.Label label1;
     // End of variables declaration//GEN-END:variables
 
+    /**
+     * avaa Kayttajatunnuksen luomiseen tarkoitetun JDialog komponentin
+     */
     private void luoKayttajatunnus() {
         UusiKayttaja luo = new UusiKayttaja(this, true, toiminnot);
         while (!luo.getKayttajaluotu()) {
@@ -288,6 +304,9 @@ public class Aloitusnakyma extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * avaa sisäänkirjautumiseen tarkoitetun JDialog komponentin
+     */
     private void liitaKayttaja() {
         Sisaankirjautuminen kirj = new Sisaankirjautuminen(this, true, toiminnot);
         while (!kirj.getKirjautunut()) {
@@ -301,6 +320,9 @@ public class Aloitusnakyma extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * muuttaa statuksen kirjautuneeksi
+     */
     private void kirjaudu() {
         this.kirjautunut = true;
         jLabelKirjautunut.setText("Käyttäjä: " + kayttaja.getKayttajatunnus());
@@ -309,6 +331,9 @@ public class Aloitusnakyma extends javax.swing.JFrame {
 
     }
 
+    /**
+     * näyttää JList komponentista valitun viinin arviot JTextPanelissa
+     */
     private void naytaArviot() {
         Viini viini = viiniValittu();
         if (viini == null) {
@@ -331,19 +356,29 @@ public class Aloitusnakyma extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(this, ilmoitus);
     }
 
+    /**
+     * avaa Arvion lisäämiseen tarkoitetun JDialog komponentin ja lisää uuden
+     * arvion järjestelmään
+     */
     private void lisaaArvio() {
         Viini viini = viiniValittu();
         if (viini == null) {
             return;
         }
-        UusiArvio uusi = new UusiArvio(this, true, toiminnot, viini.getAvain(), kayttaja.getKayttajatunnus());
+        UusiArvio uusi = new UusiArvio(this, true, viini.getAvain(), kayttaja.getKayttajatunnus());
         while (!uusi.getArvioLuotu()) {
             uusi.setVisible(true);
         }
         Arvio arvio = uusi.getArvio();
-        toiminnot.lisaaArvio(viini.getAvain(), arvio);
+        if (arvio != null) {
+            toiminnot.lisaaArvio(viini.getAvain(), arvio);
+        }
     }
 
+    /**
+     * avaa uuden Viinin luomiseen tarkoitetun JDialog komponentin ja lisää
+     * uuden Viinin järjestelmään
+     */
     private void lisaaViini() {
         UusiViini uusi = new UusiViini(this, true);
         while (!uusi.getViiniLuotu()) {
@@ -354,7 +389,10 @@ public class Aloitusnakyma extends javax.swing.JFrame {
             toiminnot.lisaaViini(viini);
         }
     }
-
+/**
+ * varmistaa että käyttäjä on valinnut viinin JListista
+ * @return 
+ */
     private Viini viiniValittu() {
         if (jList1.getSelectedValue() == null) {
             virheilmoitus("Etsi ja valitse viini ensin");
@@ -428,5 +466,34 @@ public class Aloitusnakyma extends javax.swing.JFrame {
             kayttaja.getKellari().remove(h);
             naytaOmaKellari();
         }
+    }
+
+    private void muokkaaViinia() {
+        Viini vanha = viiniValittu();
+        if (vanha == null) {
+            return;
+        }
+        String avain = vanha.getAvain();
+        UusiViini muokkaus = new UusiViini(this, true, vanha.tiedostomuoto());
+        while (!muokkaus.getViiniLuotu()) {
+            muokkaus.setVisible(true);
+        }
+        Viini uusi = muokkaus.getViini();
+        if (uusi != null) {
+            toiminnot.getViinit().remove(avain);
+            uusi.asetaAvain(avain);
+            toiminnot.lisaaViini(uusi);
+        }
+    }
+
+    private void etsiOmastaKellarista() {
+        ArrayList<Viini> osumat = new ArrayList<Viini>();
+        String hakusana = jTextField1.getText();
+        for (Hankinta h : kayttaja.getKellari()) {
+            if (h.getViini().hakuOsuma(hakusana)) {
+                osumat.add(h.getViini());
+            }
+        }
+        jList1.setListData(osumat.toArray());
     }
 }

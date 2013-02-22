@@ -1,14 +1,23 @@
-
 package Sovelluslogiikka;
 
+public class Arvio implements Comparable<Arvio> {
 
-public class Arvio implements Comparable<Arvio>{
     private Paivays paivays;
     private int pisteet;
     private String kuvaus;
     private String maistaja;
     private String avain;
-    
+
+    /**
+     * luo uuden Arvion
+     *
+     * @param avain String. Sama kuin Viini-olion avain, josta Arvio on
+     * kirjoitettu
+     * @param maistaja String. Arvion kirjoittaneen Kayttajan kayttajatunnus
+     * @param paivays Paivays-olio
+     * @param pisteet int. Kayttajan antama numeerinen arvosana
+     * @param kuvaus Kayttajan kirjoittama kuvaus viinistä
+     */
     public Arvio(String avain, String maistaja, Paivays paivays, int pisteet, String kuvaus) {
         this.avain = avain;
         this.maistaja = maistaja;
@@ -16,11 +25,13 @@ public class Arvio implements Comparable<Arvio>{
         this.pisteet = pisteet;
         this.kuvaus = kuvaus;
     }
-    public Arvio(String maistaja, Paivays paivays, String kuvaus) {
-        this.kuvaus = kuvaus;
-        this.maistaja = maistaja;
-        this.paivays = paivays;
-    }
+
+    /**
+     * luo Arvio-olion parametrinaan tiedostomuoto() metodin palauttama
+     * merkkijono
+     *
+     * @param s String tiedostomuoto
+     */
     public Arvio(String s) {
         String[] sanat = s.split("¤");
         this.avain = sanat[0];
@@ -29,27 +40,36 @@ public class Arvio implements Comparable<Arvio>{
         this.pisteet = Integer.parseInt(sanat[3]);
         this.kuvaus = sanat[4];
     }
+
     public String getAvain() {
         return avain;
     }
+
     public int getPisteet() {
         return this.pisteet;
     }
+
     public Paivays getPaivays() {
         return paivays;
     }
+
     @Override
     public String toString() {
         String format = "%1$-16s %2$-30s %3$-15s";
-        String tiedot = String.format(format,"Pvm: "+paivays.toString(), "Maistaja: "+ maistaja,"Pisteet: "+ pisteet);
-        return  tiedot+"\n"+kuvaus+"\n\n";
-                
+        String tiedot = String.format(format, "Pvm: " + paivays.toString(), "Maistaja: " + maistaja, "Pisteet: " + pisteet);
+        return tiedot + "\n" + kuvaus + "\n\n";
+
     }
+
+    /**
+     * luo ja palauttaa merkkijonon, joka talletetaan tiedostoon
+     *
+     * @return String
+     */
     public String tiedostomuoto() {
-        return avain+"¤"+maistaja+"¤"+paivays.toString()+"¤"+pisteet+"¤"+kuvaus;
+        return avain + "¤" + maistaja + "¤" + paivays.toString() + "¤" + pisteet + "¤" + kuvaus;
     }
-   
-    
+
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {
@@ -92,5 +112,4 @@ public class Arvio implements Comparable<Arvio>{
     public int compareTo(Arvio t) {
         return this.paivays.compareTo(t.getPaivays());
     }
-    
 }

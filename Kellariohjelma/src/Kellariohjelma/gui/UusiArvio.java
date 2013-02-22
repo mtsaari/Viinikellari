@@ -5,33 +5,36 @@
 package Kellariohjelma.gui;
 
 import Sovelluslogiikka.Arvio;
-import Sovelluslogiikka.Kellaritoiminnot;
 import Sovelluslogiikka.Paivays;
 import javax.swing.JOptionPane;
 
 /**
+ * käyttöliittymäluokka joka luo uuden Arvion käyttäjän antaman syötteen
+ * pohjalta
  *
  * @author mikko
  */
 public class UusiArvio extends javax.swing.JDialog {
 
-    private Kellaritoiminnot toiminnot;
     private Arvio arvio;
     private boolean arvioLuotu;
     private String avain;
     private String tunnus;
 
     /**
-     * Creates new form UusiArvio
+     * luo uuden JDialog olion kun käyttäjä haluaa kirjoittaa arvion
+     *
+     * @param avain arvioitavan Viinin avain
+     * @param tunnus kirjoittajan käyttäjätunnus
      */
-    public UusiArvio(java.awt.Frame parent, boolean modal, Kellaritoiminnot toiminnot, String avain, String tunnus) {
+    public UusiArvio(java.awt.Frame parent, boolean modal, String avain, String tunnus) {
         super(parent, modal);
         initComponents();
-        this.toiminnot = toiminnot;
         this.arvioLuotu = false;
         this.avain = avain;
         this.tunnus = tunnus;
     }
+
     public boolean getArvioLuotu() {
         return arvioLuotu;
     }
@@ -74,6 +77,7 @@ public class UusiArvio extends javax.swing.JDialog {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -89,6 +93,13 @@ public class UusiArvio extends javax.swing.JDialog {
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
+            }
+        });
+
+        jButton2.setText("Palaa");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
             }
         });
 
@@ -112,7 +123,9 @@ public class UusiArvio extends javax.swing.JDialog {
                             .addComponent(jTextFieldPaivays))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButton1)
-                        .addGap(130, 130, 130))))
+                        .addGap(34, 34, 34)
+                        .addComponent(jButton2)
+                        .addGap(24, 24, 24))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -131,7 +144,9 @@ public class UusiArvio extends javax.swing.JDialog {
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jTextFieldPisteet, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jButton1))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jButton1)
+                        .addComponent(jButton2)))
                 .addGap(29, 29, 29))
         );
 
@@ -140,13 +155,18 @@ public class UusiArvio extends javax.swing.JDialog {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         luoArvio();
-        if(arvioLuotu) {
+        if (arvioLuotu) {
             setVisible(false);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
-    
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        arvioLuotu = true;
+        setVisible(false);
+    }//GEN-LAST:event_jButton2ActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JEditorPane jEditorPane1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -155,45 +175,51 @@ public class UusiArvio extends javax.swing.JDialog {
     private javax.swing.JTextField jTextFieldPaivays;
     private javax.swing.JTextField jTextFieldPisteet;
     // End of variables declaration//GEN-END:variables
-
+/**
+     * luo uuden Paivays olion käyttäjän syötteen pohjalta
+     *
+     * @param p käyttäjän syöttämä päiväys merkkijonona muodossa pp.kk.vvvv
+     * @return uusi Paivays olio
+     */
     private Paivays luoPaivays(String p) {
-        Paivays paivays = null;
         if (!paivaysOikeaaMuotoa(p)) {
             virheilmoitus("Anna päiväys muodossa 'pp.kk.vvvv'.");
-            arvioLuotu = false;
-        } else {
-            paivays = new Paivays(p);
-            if (!paivays.onkoPaivaysKorrekti()) {
-                virheilmoitus("Antamasi päiväys on virheellinen.");
-                arvioLuotu = false;
-                paivays = null;
-            }
+            return null;
+        }
+        Paivays paivays = new Paivays(p);
+        if (!paivays.onkoPaivaysKorrekti()) {
+            virheilmoitus("Antamasi päiväys on virheellinen.");
+            return null;
         }
         return paivays;
     }
 
-    private void luoArvio() {
-        arvioLuotu = true;
+    /**
+     * lukee käyttäjän antaman syötteen ja luo uuden Arvion
+     */
+    private void luoArvio() {     
         String pvm = jTextFieldPaivays.getText();
         Paivays paivays = luoPaivays(pvm);
-        if(paivays==null) {
+        if (paivays == null) {
             return;
         }
         String kuvaus = jEditorPane1.getText();
         String pisteet = jTextFieldPisteet.getText();
         if (!onkoNumero(pisteet)) {
             virheilmoitus("Anna pisteet numeroina.");
-            arvioLuotu = false;
-        } else {
-            int p = Integer.parseInt(pisteet);
-            if(p > 100 || p < 50) {
-                virheilmoitus("Pisteiden tulee olla välillä 50-100");
-                arvioLuotu = false;
-            } else {
-                this.arvio = new Arvio(avain,tunnus,paivays,p,kuvaus);
-            }
+            return;
         }
+        int p = Integer.parseInt(pisteet);
+        if (p > 100 || p < 50) {
+            virheilmoitus("Pisteiden tulee olla välillä 50-100");
+            return;
+        }
+        this.arvio = new Arvio(avain, tunnus, paivays, p, kuvaus);
+        arvioLuotu = true;
+
+
     }
+
     private boolean onkoNumero(String numero) {
         try {
             Integer.parseInt(numero);

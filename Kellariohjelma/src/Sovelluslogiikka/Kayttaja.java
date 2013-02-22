@@ -16,21 +16,34 @@ public class Kayttaja {
     private String salasana;
     private String kayttajatunnus;
     private ArrayList<Hankinta> omaKellari;
-
+    
+    /**
+     * luo uuden Kayttaja olion
+     * @param nimi String
+     * @param kayttajatunnus String 
+     * @param salasana String
+     */
     public Kayttaja(String nimi, String kayttajatunnus, String salasana) {
         this.nimi = nimi;
         this.kayttajatunnus = kayttajatunnus;
         this.salasana = salasana;
 
     }
-
+    /**
+     * luo uuden Käyttäjä-olion tiedostomuoto-merkkijonon avulla kun Kayttajan tiedot kopioidaan tiedostosta
+     * @param s String jossa attribuutit on erotettu merkillä "¤"
+     */
     public Kayttaja(String s) {
         String[] a = s.split("¤");
         this.kayttajatunnus = a[0];
         this.salasana = a[1];
         this.nimi = a[2];
     }
-
+    
+    /**
+     * kertoo Kayttajan kellarissa jäljellä olevien pullojen määrän
+     * @return int jäljellä olevien pullojen määrä
+     */
     public int pullojenMaara() {
         if (omaKellari.isEmpty()) {
             return 0;
@@ -41,7 +54,10 @@ public class Kayttaja {
         }
         return summa;
     }
-
+    /**
+     * palauttaa kellarissa olevien pullojen yhteenlasketun arvon
+     * @return double 
+     */
     public double kellarinArvo() {
         if (omaKellari.isEmpty()) {
             return 0;
@@ -52,7 +68,10 @@ public class Kayttaja {
         }
         return summa;
     }
-
+    /**
+     * liittää Kayttaja-olioon ArrayList tietorakenteen, joka sisältää Käyttäjän Hankinnat. 
+     * @param lista ArrayList<Hankinta>.  
+     */
     public void liitaKellari(ArrayList<Hankinta> lista) {
         if (lista == null) {
             this.omaKellari = new ArrayList<Hankinta>();
@@ -72,7 +91,10 @@ public class Kayttaja {
     public ArrayList<Hankinta> getKellari() {
         return omaKellari;
     }
-
+    /**
+     * luo ja palauttaa merkkijonon, joka tallennetaan tiedostoon ja jonka avulla konstruktori luo kopion Kayttaja-oliosta
+     * @return String merkkijono, jossa Kayttajan attribuutit on erotettu merkillä "¤"
+     */
     public String tiedostomuoto() {
         return kayttajatunnus + "¤" + salasana + "¤" + nimi;
     }

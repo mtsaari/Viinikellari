@@ -60,6 +60,21 @@ public class ViiniTest {
         Viini uusi = new Viini(viini1.tiedostomuoto());
         assertEquals(true, uusi.equals(viini1));
     }
+    @Test
+    public void hakuOsumaPalauttaaTrueKunYhdenSananMerkkijonoVastaaJotakinViininAttribuuttia() {
+        assertEquals(true, viini1.hakuOsuma("Syrah"));
+        assertEquals(true, viini1.hakuOsuma("ranska"));
+        assertEquals(true, viini1.hakuOsuma("Tournon"));
+                
+    }
+    @Test
+    public void hakuOsumaPalauttaaTrueKunUseanSananHakumerkkijonoVastaaUseaaaViininAttribuuttiaTaiAttribuutinOsaa() {
+        assertEquals(true, viini1.hakuOsuma("ranska syrah"));
+        assertEquals(false, viini1.hakuOsuma("merlot ranska"));
+        assertEquals(true, viini1.hakuOsuma("Rhone Delas"));
+        assertEquals(true, viini1.hakuOsuma("syrah ranska rhone"));
+        assertEquals(false, viini1.hakuOsuma("st joseph syrah perrin"));
+    }
     
     
 }

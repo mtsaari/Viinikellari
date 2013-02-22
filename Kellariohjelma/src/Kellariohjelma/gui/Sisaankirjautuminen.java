@@ -9,15 +9,18 @@ import Sovelluslogiikka.Kellaritoiminnot;
 import javax.swing.JOptionPane;
 
 /**
- *
+ *  Käyttöliittymäluokka, jota käytetään sisäänkirjautumiseen
  * @author mikko
  */
 public class Sisaankirjautuminen extends javax.swing.JDialog {
+
     private Kellaritoiminnot toiminnot;
     private boolean kirjautunut;
     private Kayttaja kayttaja;
+
     /**
-     * Creates new form Sisaankirjautuminen
+     * luo uuden JDialog olion kun käyttäjä haluaa kirjautua sisään
+     * @param toiminnot 
      */
     public Sisaankirjautuminen(java.awt.Frame parent, boolean modal, Kellaritoiminnot toiminnot) {
         super(parent, modal);
@@ -25,33 +28,37 @@ public class Sisaankirjautuminen extends javax.swing.JDialog {
         this.toiminnot = toiminnot;
         this.kirjautunut = false;
     }
+
     public boolean getKirjautunut() {
         return kirjautunut;
     }
+
     public Kayttaja getKayttaja() {
         return kayttaja;
     }
+    /**
+     * lukeen käyttäjän antaman syötteen ja muuttaa statuksen kirjautuneeksi
+     */
     public void kirjaudu() {
-        this.kirjautunut = true;
         String tunnus = jTextField1.getText();
         String salasana = new String(jPasswordField1.getPassword());
         Kayttaja uusi = toiminnot.etsiKayttaja(tunnus);
-        if (uusi==null) {
+        if (uusi == null) {
             virheilmoitus("Tuntematon käyttäjätunnus.");
-            kirjautunut=false;
-        } else {
-            if(!uusi.getSalasana().equals(salasana)) {
-                virheilmoitus("Virheellinen salasana.");
-                kirjautunut=false;
-            } else {
-                this.kayttaja = uusi;
-            }
+            return;
         }
+        if (!uusi.getSalasana().equals(salasana)) {
+            virheilmoitus("Virheellinen salasana.");
+            return;
+        }
+        this.kayttaja = uusi;
+        this.kirjautunut=true;
     }
+
     private void virheilmoitus(String ilmoitus) {
         JOptionPane.showMessageDialog(this, ilmoitus);
     }
-   
+
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -126,24 +133,25 @@ public class Sisaankirjautuminen extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+/**
+ * tapahtumakuuntelija Kirjaudu-nappulalle
+ */
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-       kirjaudu();
-       if(kirjautunut) {
-           setVisible(false);
-       }
+        kirjaudu();
+        if (kirjautunut) {
+            setVisible(false);
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
-
+/**
+ * tapahtumakuuntelija Palaa-vaihtoehdolle
+ */
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        kirjautunut=true;
+        kirjautunut = true;
         setVisible(false);
     }//GEN-LAST:event_jButton2ActionPerformed
-
     /**
      * @param args the command line arguments
      */
-    
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;

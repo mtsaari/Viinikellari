@@ -9,7 +9,13 @@ import Sovelluslogiikka.Paivays;
 import Sovelluslogiikka.Viini;
 import javax.swing.JOptionPane;
 
+/**
+ * luokan avulla käyttäjä lisää kellariinsa Hankinnan
+ *
+ * @author mikko
+ */
 public class UusiHankinta extends javax.swing.JDialog {
+
     private Viini viini;
     private Hankinta hankinta;
     private boolean hankintaLuotu;
@@ -131,6 +137,14 @@ public class UusiHankinta extends javax.swing.JDialog {
     private javax.swing.JTextField jTextFieldPvm;
     // End of variables declaration//GEN-END:variables
 
+    /**
+     * luo uuden JDialog olion kun käyttäjä haluaa lisätä Hankinnan kellariinsa
+     *
+     * @param parent
+     * @param modal
+     * @param viini Viini joka lisätään kellariin
+     * @param tunnus käyttäjätunnus
+     */
     public UusiHankinta(java.awt.Frame parent, boolean modal, Viini viini, String tunnus) {
         super(parent, modal);
         initComponents();
@@ -138,60 +152,74 @@ public class UusiHankinta extends javax.swing.JDialog {
         this.viini = viini;
         this.tunnus = tunnus;
     }
+
     public boolean gethankintaLuotu() {
         return hankintaLuotu;
     }
+
     public Hankinta getHankinta() {
         return this.hankinta;
     }
+
+    /**
+     * lukee käyttäjän antaman syötteen ja luo uuden Hankinnan
+     */
     public void luoHankinta() {
-        hankintaLuotu = true;
         String pvm = jTextFieldPvm.getText();
         Paivays paivays = luoPaivays(pvm);
+        if  (paivays==null) {
+            return;
+        }
         String pullokoko = jTextFieldKoko.getText();
         String maara = jTextFieldKpl.getText();
         String hinta = jTextFieldHinta.getText();
         String myyja = jTextFieldPaikka.getText();
         if (!onkoKokonaisluku(pullokoko)) {
             virheilmoitus("Anna pullon koko millilitroissa kokonaislukuna.");
-            hankintaLuotu = false;
             return;
         }
         int koko = Integer.parseInt(pullokoko);
-        if(!onkoKokonaisluku(maara)) {
+        if (!onkoKokonaisluku(maara)) {
             virheilmoitus("Anna pullojen määrä yhtenä kokonaislukuna");
-            hankintaLuotu = false;
             return;
         }
         int kpl = Integer.parseInt(maara);
-        if(!onkoDesimaaliluku(hinta)) {
+        if (!onkoDesimaaliluku(hinta)) {
             virheilmoitus("Anna hinta desimaalilukuna. Erota desimaalit pisteellä '.'");
-            hankintaLuotu = false;
             return;
         }
-        double eurot = Double.parseDouble(hinta);    
+        double eurot = Double.parseDouble(hinta);
         this.hankinta = new Hankinta(viini, tunnus, kpl, koko, paivays, myyja, eurot);
-
+        this.hankintaLuotu=true;
 
 
     }
 
+    /**
+     * luo uuden Paivays olion käyttäjän syötteen pohjalta
+     *
+     * @param p käyttäjän syöttämä päiväys merkkijonona muodossa pp.kk.vvvv
+     * @return uusi Paivays olio
+     */
     private Paivays luoPaivays(String p) {
-        Paivays paivays = null;
         if (!paivaysOikeaaMuotoa(p)) {
             virheilmoitus("Anna päiväys muodossa 'pp.kk.vvvv'.");
-            hankintaLuotu = false;
-        } else {
-            paivays = new Paivays(p);
-            if (!paivays.onkoPaivaysKorrekti()) {
-                virheilmoitus("Antamasi päiväys on virheellinen.");
-                hankintaLuotu = false;
-                paivays = null;
-            }
+            return null;
+        }
+        Paivays paivays = new Paivays(p);
+        if (!paivays.onkoPaivaysKorrekti()) {
+            virheilmoitus("Antamasi päiväys on virheellinen.");
+            return null;
         }
         return paivays;
     }
 
+    /**
+     * tarkistaa onko käyttäjän syöttämä päivämäärämerkkijono oikeaa muotoa
+     *
+     * @param s käyttäjän syöttämä päivämäärä
+     * @return
+     */
     private boolean paivaysOikeaaMuotoa(String s) {
         String[] p = s.split("\\.");
         if (p.length != 3) {
@@ -205,6 +233,12 @@ public class UusiHankinta extends javax.swing.JDialog {
         return true;
     }
 
+    /**
+     * tarkistaa onko käyttäjän antama merkkijono muutettavissa kokonaisluvuiksi
+     *
+     * @param numero osa käyttäjän syöttämästä päivämäärämerkkijonosta
+     * @return
+     */
     private boolean onkoKokonaisluku(String numero) {
         try {
             Integer.parseInt(numero);
@@ -218,6 +252,12 @@ public class UusiHankinta extends javax.swing.JDialog {
         JOptionPane.showMessageDialog(this, ilmoitus);
     }
 
+    /**
+     * tarkistaa onko käyttäjän syöttämä hinta desimaaliluku
+     *
+     * @param numero käyttäjän syöttämä merkkijono
+     * @return
+     */
     private boolean onkoDesimaaliluku(String numero) {
         try {
             Double.parseDouble(numero);

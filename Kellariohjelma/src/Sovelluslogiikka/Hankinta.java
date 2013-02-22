@@ -121,8 +121,18 @@ public class Hankinta implements Comparable<Hankinta>{
         if (Double.doubleToLongBits(this.hinta) != Double.doubleToLongBits(other.hinta)) {
             return false;
         }
+        if (this.juotu != other.juotu) {
+            return false;
+        }
+        if (this.jaljella != other.jaljella) {
+            return false;
+        }
         return true;
     }
+
+    
+     
+       
 
     
 }
