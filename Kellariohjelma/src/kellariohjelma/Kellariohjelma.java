@@ -4,7 +4,7 @@
  */
 package kellariohjelma;
 
-import Kellariohjelma.gui.Aloitusnakyma;
+import Kayttoliittyma.Aloitusnakyma;
 import Sovelluslogiikka.Kellaritoiminnot;
 import Tiedostonkasittely.Tiedostonkasittely;
 import java.awt.event.WindowEvent;

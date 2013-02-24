@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package Kellariohjelma.gui;
+package Kayttoliittyma;
 
 import Sovelluslogiikka.Hankinta;
 import Sovelluslogiikka.Paivays;
