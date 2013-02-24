@@ -2,13 +2,14 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package Kellariohjelma.gui;
+package Kayttoliittyma;
 
 import Sovelluslogiikka.Arvio;
 import Sovelluslogiikka.Hankinta;
 import Sovelluslogiikka.Kayttaja;
 import Sovelluslogiikka.Kellaritoiminnot;
 import Sovelluslogiikka.Viini;
+import Tiedostonkasittely.Tiedostonkasittely;
 import java.util.ArrayList;
 import java.util.Collections;
 import javax.swing.JOptionPane;
@@ -21,6 +22,7 @@ import javax.swing.JOptionPane;
 public class Aloitusnakyma extends javax.swing.JFrame {
 
     private Kellaritoiminnot toiminnot;
+    private Tiedostonkasittely kasittely;
     private boolean kirjautunut;
     private Kayttaja kayttaja;
 
@@ -29,12 +31,13 @@ public class Aloitusnakyma extends javax.swing.JFrame {
      *
      * @param toiminnot ohjelman tietoja hallinoiva Kellaritoiminnot-olio
      */
-    public Aloitusnakyma(Kellaritoiminnot toiminnot) {
+    public Aloitusnakyma(Kellaritoiminnot toiminnot, Tiedostonkasittely kasittely) {
         initComponents();
         this.toiminnot = toiminnot;
         this.kirjautunut = false;
         this.kayttaja = null;
-
+        this.kasittely = kasittely;
+        kopioiTiedostot(kasittely, toiminnot);
     }
 
     public void run() {
@@ -76,6 +79,11 @@ public class Aloitusnakyma extends javax.swing.JFrame {
         label1.setText("label1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         jButton1.setText("Etsi viinejä");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -269,6 +277,13 @@ public class Aloitusnakyma extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_jList1ValueChanged
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        kasittely.tyhjennaKaikkiTiedostot();
+        kirjoitaTiedostot(kasittely, toiminnot);
+        System.exit(0);
+    }//GEN-LAST:event_formWindowClosing
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private java.awt.Button button1;
     private java.awt.Button button2;
@@ -495,5 +510,19 @@ public class Aloitusnakyma extends javax.swing.JFrame {
             }
         }
         jList1.setListData(osumat.toArray());
+    }
+    private static void kopioiTiedostot(Tiedostonkasittely kasittely, Kellaritoiminnot toim) {
+        toim.lisaaViinilista(kasittely.kopioiViinit());
+        toim.lisaaKayttajalista(kasittely.kopioiKayttajat());
+        toim.lisaaArviolista(kasittely.kopioiArviot());
+        toim.lisaaHankintalista(kasittely.kopioiHankinnat());
+        
+    }
+    private static void kirjoitaTiedostot(Tiedostonkasittely kasittely, Kellaritoiminnot toim) {
+        kasittely.tyhjennaKaikkiTiedostot();
+        kasittely.kirjoitaViinit(toim.getViinit());
+        kasittely.kirjoitaKayttajat(toim.getKayttajat());
+        kasittely.kirjoitaArviot(toim.getArviot());
+        kasittely.kirjoitaHankinnat(toim.getHankinnat());
     }
 }
